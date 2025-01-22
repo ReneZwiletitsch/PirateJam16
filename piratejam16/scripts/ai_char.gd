@@ -1,19 +1,34 @@
 extends CharacterBody2D
 
+
+
+
+
+@onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
+var movement_speed: float = 200.0
+var movement_target_position: Vector2 = Vector2(60.0,180.0)
+
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	print("TEST")
 	var current_char := AIcharacter.new()
-	print(current_char.hp)
+	print(current_char.speed)
+	movement_speed = current_char.speed
 	
-
+	#idk what these do, they are from the documentation
 	# These values need to be adjusted for the actor's speed
 	# and the navigation layout.
 	navigation_agent.path_desired_distance = 4.0
 	navigation_agent.target_desired_distance = 4.0
 
+	#this is how to choose where it walks
+	movement_target_position = Vector2(0.0,0.0)
+
+
 	# Make sure to not await during _ready.
-	actor_setup.call_deferred()
+	actor_setup.call_deferred(movement_target_position)
 
 
 
@@ -22,17 +37,7 @@ func _process(delta: float) -> void:
 	pass
 
 
-
-
-
-
-var movement_speed: float = 200.0
-var movement_target_position: Vector2 = Vector2(60.0,180.0)
-
-@onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
-
-
-func actor_setup():
+func actor_setup(movement_target_position):
 	# Wait for the first physics frame so the NavigationServer can sync.
 	await get_tree().physics_frame
 
@@ -55,9 +60,6 @@ func _physics_process(delta):
 
 
 
-
-
-
 class AIcharacter:
 	#stats 
 	var rng = RandomNumberGenerator.new()
@@ -68,4 +70,6 @@ class AIcharacter:
 	var willpower := rng.randi_range(1, 100)
 	
 
+	
+	
 	
