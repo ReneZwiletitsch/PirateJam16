@@ -1,7 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://cl0f7pp1rg8h1"]
+[gd_scene load_steps=9 format=3 uid="uid://bqvoixwaff742"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_ol2ut"]
-[ext_resource type="Texture2D" path="res://assets/sprites/knight.png" id="1_tuvgg"]
+[ext_resource type="Texture2D" uid="uid://g7t1b11dyq6v" path="res://assets/sprites/temporary/knight.png" id="1_tuvgg"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dm0hw"]
 atlas = ExtResource("1_tuvgg")
@@ -55,3 +55,6 @@ frame_progress = 0.118025
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -7.5)
 shape = SubResource("RectangleShape2D_eu7ag")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(3.765, 3.765)
