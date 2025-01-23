@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://c1jenpsj7bgmo"]
+[gd_scene load_steps=4 format=3 uid="uid://c1jenpsj7bgmo"]
 
 [ext_resource type="Texture2D" uid="uid://csy4rkfkqmnsc" path="res://assets/sprites/temporary/black100x100.png" id="1_b0l4x"]
-[ext_resource type="PackedScene" uid="uid://bqvoixwaff742" path="res://Scenes/player.tscn" id="2_o2fr6"]
 [ext_resource type="PackedScene" uid="uid://dm77ptpohrroj" path="res://Scenes/AIChar.tscn" id="3_pc4t4"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_ldq31"]
@@ -14,14 +13,15 @@ outlines = Array[PackedVector2Array]([PackedVector2Array(-1237, -1223, 1549, -11
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_b0l4x")
 
-[node name="Player" parent="." instance=ExtResource("2_o2fr6")]
-
 [node name="AiChar" parent="." instance=ExtResource("3_pc4t4")]
 position = Vector2(-22, 28)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(3.765, 3.765)
+
+[node name="AIChar" parent="." instance=ExtResource("3_pc4t4")]
+position = Vector2(80, 66)
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 position = Vector2(16, -12)
 navigation_polygon = SubResource("NavigationPolygon_ldq31")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(3.765, 3.765)

@@ -6,7 +6,8 @@ var movement_speed: float = 200.0
 var movement_target_position: Vector2 = Vector2(0.0,0.0)
 var willpower: float=0
 @onready var playercontrol = false
-
+@onready var dead = true
+@onready var current_char := AIcharacter.new()
 
 func _input(event):
 	if event.is_action_pressed("test"):
@@ -15,12 +16,31 @@ func _input(event):
 		#this is how to set a new target position
 		movement_target_position = Vector2(0.0,0.0)
 		set_movement_target(movement_target_position)
-
+	
+	elif event.is_action_pressed("test2"):
+		dead = false
+		
+	elif event.is_action_pressed("necromancy"):
+		if not dead:
+			dead = true
+			Singleton.player_position = global_position
+			Singleton.current_hp = current_char.hp
+			Singleton.current_strenght = current_char.strenght
+			Singleton.current_dex = current_char.dex
+			
+		elif get_local_mouse_position().length() < 20 and (global_position-Singleton.player_position).length() <200:
+			print("did a necromancy")
+			dead = false
+			playercontrol = true
+			Singleton.current_hp = current_char.hp
+			Singleton.current_strenght = current_char.strenght
+			Singleton.current_dex = current_char.dex
+			
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var current_char := AIcharacter.new()
+	
 	movement_speed = current_char.speed
 	willpower = current_char.willpower
 	
@@ -61,14 +81,19 @@ func _physics_process(delta):
 	if current_agent_position.distance_to(movement_target_position) < 2:
 		AI_input = Vector2(0,0)
 	
-	#if the player doesn't input anything, follow a path at full speed, otherwise battle the player over control
-	if (player_input_direction == Vector2(0,0) or not playercontrol):
-		velocity = AI_input * movement_speed
-	else:
-		velocity = (AI_input * willpower + player_input_direction*(1-willpower))* movement_speed
 	
 	
-	move_and_slide()
+	if not dead:
+		Singleton.player_position = global_position
+		#if the player doesn't input anything, follow a path at full speed, otherwise battle the player over control
+		if (player_input_direction == Vector2(0,0) or not playercontrol):
+			velocity = AI_input * movement_speed
+		else:
+			velocity = (AI_input * willpower + player_input_direction*(1-willpower))* movement_speed
+		
+	
+		move_and_slide()
+
 
 
 
@@ -77,9 +102,10 @@ class AIcharacter:
 	var rng = RandomNumberGenerator.new()
 	var hp := rng.randi_range(1, 100)
 	var strenght := rng.randi_range(1, 100)
-	var speed := rng.randi_range(1, 100)
+	var speed := rng.randi_range(50, 100)
 	var dex := rng.randi_range(1, 100)
 	var willpower := rng.randf_range(0, 0.2)
+	
 	
 
 	
