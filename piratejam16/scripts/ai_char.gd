@@ -20,7 +20,6 @@ func _input(event):
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	print("TEST")
 	var current_char := AIcharacter.new()
 	movement_speed = current_char.speed
 	willpower = current_char.willpower
@@ -78,9 +77,9 @@ class AIcharacter:
 	var rng = RandomNumberGenerator.new()
 	var hp := rng.randi_range(1, 100)
 	var strenght := rng.randi_range(1, 100)
-	var speed := 100#rng.randi_range(1, 100)
+	var speed := rng.randi_range(1, 100)
 	var dex := rng.randi_range(1, 100)
-	var willpower := 0.1#rng.randf_range(0, 0.1)
+	var willpower := rng.randf_range(0, 0.2)
 	
 
 	
