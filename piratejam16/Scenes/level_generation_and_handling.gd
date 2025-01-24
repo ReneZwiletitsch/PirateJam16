@@ -21,19 +21,30 @@ func _input(event):
 	if event.is_action_pressed("necromancy"):
 		for i in all_ai_char_instances:
 			i.necromancy()
+			if i.playercontrol:
+				Singleton.current_character = i
 
 	#player attacking
 	elif event.is_action_pressed("attack"):
-		print(Singleton.has_character)
-		if Singleton.has_character:
-			var can_attack = false
-			for i in all_ai_char_instances:
-				if i.playercontrol and i.attack_rdy:
-					can_attack = true
-						
-			if can_attack:	
+		if Singleton.current_character != null:
+			#print(Singleton.current_character.get_local_mouse_position().angle())
+
+			if Singleton.current_character.attack_rdy:
+				Singleton.current_character.attack() #starts cooldown
+				
 				for i in all_ai_char_instances:
-					i.character_damage()
+					#check if in cone
+					var mouse_vec = Singleton.current_character.get_local_mouse_position().normalized()
+					
+					var enemy_pos = (i.global_position-Singleton.current_character.global_position)
+					var enemy_vec = enemy_pos.normalized()
+					if abs(acos(mouse_vec.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< Singleton.basic_character_range:
+						print("is attacked")
+						i.character_damage()
+					else:
+						print("dodged")
+				print("#########")
+					
 			else: 
 				print("on cooldown",Singleton.max_attack_cooldown/Singleton.current_player_dex)
 		else:
@@ -42,6 +53,7 @@ func _input(event):
 			
 	elif event.is_action_pressed("test"):
 		pass
+
 
 
 
@@ -62,9 +74,8 @@ func spawn_ai_char(dead):
 	
 	
 	
+	
 
-	
-	
 
 
 
