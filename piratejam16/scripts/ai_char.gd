@@ -5,41 +5,55 @@ extends CharacterBody2D
 var movement_speed: float = 200.0
 var movement_target_position: Vector2 = Vector2(0.0,0.0)
 var willpower: float=0
+
+@onready var current_char := AIcharacter.new()
+@onready var character_range := 20
+
+#flags
 @onready var playercontrol = false
 @onready var dead = true
-@onready var current_char := AIcharacter.new()
+@onready var fully_dead := false
 
-func _input(event):
-	if event.is_action_pressed("test"):
-		playercontrol = true
-		
-		#this is how to set a new target position
-		movement_target_position = Vector2(0.0,0.0)
-		set_movement_target(movement_target_position)
+#temp
+@onready var test := true
+@onready var attack_rdy := true
+@onready var test2
+
+
+func debug_message():
+	print(dead)
+
+
+
+func necromancy():
+	if not dead and playercontrol:
+		Singleton.player_position = global_position
+		Singleton.current_player_hp = 0
+		Singleton.current_player_strenght = 0
+		Singleton.current_player_dex = 0
+		Singleton.has_character = false
+		dead = true
+		playercontrol = false
 	
-	elif event.is_action_pressed("test2"):
+	elif get_local_mouse_position().length() < 20 and dead and not fully_dead and (global_position-Singleton.player_position).length() <200 and not Singleton.has_character:
+		print("did a necromancy")
+		Singleton.player_died = false
+		Singleton.has_character = true
 		dead = false
-		
-	elif event.is_action_pressed("necromancy"):
-		if not dead:
-			dead = true
-			Singleton.player_position = global_position
-			Singleton.current_hp = current_char.hp
-			Singleton.current_strenght = current_char.strenght
-			Singleton.current_dex = current_char.dex
-			
-		elif get_local_mouse_position().length() < 20 and (global_position-Singleton.player_position).length() <200:
-			print("did a necromancy")
-			dead = false
-			playercontrol = true
-			Singleton.current_hp = current_char.hp
-			Singleton.current_strenght = current_char.strenght
-			Singleton.current_dex = current_char.dex
-			
+		playercontrol = true
+		Singleton.current_player_hp = current_char.curr_hp
+		Singleton.current_player_strenght = current_char.strenght
+		Singleton.current_player_dex = current_char.dex
+		print("player now has this hp: ",Singleton.current_player_hp)
+		print("player now has this str: ",Singleton.current_player_strenght)
+				
 
+	
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	$CollisionShape2D.disabled = true
+	
 	
 	movement_speed = current_char.speed
 	willpower = current_char.willpower
@@ -51,16 +65,22 @@ func _ready() -> void:
 	navigation_agent.target_desired_distance = 4.0
 
 	# Make sure to not await during _ready.
-	actor_setup.call_deferred(movement_target_position)
+	actor_setup.call_deferred()
 
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	if playercontrol and Singleton.player_died:
+		print("player just died, doing fully_dead thing")
+		fully_dead = true
+		dead = true
+		Singleton.player_position = global_position
+		Singleton.has_character = false
+		print("end of the function")
+		playercontrol = false
 
-
-func actor_setup(movement_target_position):
+func actor_setup():
 	# Wait for the first physics frame so the NavigationServer can sync.
 	await get_tree().physics_frame
 
@@ -71,18 +91,54 @@ func set_movement_target(movement_target: Vector2):
 	navigation_agent.target_position = movement_target
 
 
+
+func character_damage():
+	if (global_position-Singleton.player_position).length()<character_range and not playercontrol and not dead:
+		current_char.curr_hp -= Singleton.current_player_strenght
+		#print("character got dmg",current_char.curr_hp)
+		if current_char.curr_hp <=0:
+			dead = true
+			print("character has died")
+			current_char.curr_hp = current_char.max_hp
+
+
+func npc_attack():
+	attack_rdy = false
+	$Attack_timer.start(Singleton.max_attack_cooldown/current_char.dex)
+	Singleton.player_damage(current_char.strenght)
+		
+	
+
+func _on_attack_timer_timeout() -> void:
+	$Attack_timer.stop()
+	attack_rdy = true
+	
+
+
+
+
 func _physics_process(delta):
+	
+	#walk towards player, except if you are possesed by the player; temp, should be dependent on sight range or something
+	if not playercontrol:
+		set_movement_target(Singleton.player_position)
+		
+	#temp, replace by logic where the body wants to go
+	else:
+		set_movement_target(Vector2(0.0,0.0))
+		
 	var current_agent_position: Vector2 = global_position
 	var next_path_position: Vector2 = navigation_agent.get_next_path_position()
 	var player_input_direction := Input.get_vector("left", "right", "up", "down")
 	var AI_input := current_agent_position.direction_to(next_path_position)
+
 	
-	#if navigation_agent.is_navigation_finished():
-	if current_agent_position.distance_to(movement_target_position) < 2:
+	#if we are in range of the player, stop walking and attack
+	if not dead and current_agent_position.distance_to(movement_target_position) < character_range and attack_rdy:
 		AI_input = Vector2(0,0)
-	
-	
-	
+		if not playercontrol:
+			npc_attack()
+
 	if not dead:
 		Singleton.player_position = global_position
 		#if the player doesn't input anything, follow a path at full speed, otherwise battle the player over control
@@ -91,7 +147,6 @@ func _physics_process(delta):
 		else:
 			velocity = (AI_input * willpower + player_input_direction*(1-willpower))* movement_speed
 		
-	
 		move_and_slide()
 
 
@@ -100,13 +155,13 @@ func _physics_process(delta):
 class AIcharacter:
 	#stats 
 	var rng = RandomNumberGenerator.new()
-	var hp := rng.randi_range(1, 100)
-	var strenght := rng.randi_range(1, 100)
+	var max_hp :=  rng.randi_range(1, 100)
+	var strenght := rng.randi_range(1, 10)
 	var speed := rng.randi_range(50, 100)
 	var dex := rng.randi_range(1, 100)
 	var willpower := rng.randf_range(0, 0.2)
-	
-	
+	var curr_hp := max_hp
+
 
 	
 	

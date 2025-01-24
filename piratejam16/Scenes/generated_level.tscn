@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://38yc1cg6du0s"]
+
+[ext_resource type="Script" path="res://Scenes/level_generation_and_handling.gd" id="1_cv12o"]
+[ext_resource type="Texture2D" uid="uid://csy4rkfkqmnsc" path="res://assets/sprites/temporary/black100x100.png" id="2_7rxt4"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_fu5h6"]
+vertices = PackedVector2Array(1540.83, -1137.21, 1987.67, 985, -1321.56, 985, -1227.43, -1212.73)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-1237, -1223, 1549, -1147, 2000, 995, -1332, 995)])
+
+[node name="GeneratedLevel" type="Node2D"]
+script = ExtResource("1_cv12o")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_7rxt4")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(3.765, 3.765)
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+position = Vector2(16, -12)
+navigation_polygon = SubResource("NavigationPolygon_fu5h6")

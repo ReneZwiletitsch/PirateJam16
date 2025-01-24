@@ -25,3 +25,12 @@ position = Vector2(80, 66)
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 position = Vector2(16, -12)
 navigation_polygon = SubResource("NavigationPolygon_ldq31")
+
+[node name="AIChar2" parent="." instance=ExtResource("3_pc4t4")]
+position = Vector2(-87, -118)
+
+[node name="AIChar3" parent="." instance=ExtResource("3_pc4t4")]
+position = Vector2(274, -103)
+
+[node name="AIChar4" parent="." instance=ExtResource("3_pc4t4")]
+position = Vector2(-176, 95)

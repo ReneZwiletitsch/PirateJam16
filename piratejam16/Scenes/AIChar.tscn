@@ -40,7 +40,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gebq4"]
-radius = 15.0333
+radius = 7.07107
 
 [node name="AIChar" type="CharacterBody2D"]
 script = ExtResource("2_moamb")
@@ -54,3 +54,7 @@ frame_progress = 0.209059
 shape = SubResource("CircleShape2D_gebq4")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="Attack_timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Attack_timer" to="." method="_on_attack_timer_timeout"]
