@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://xwwvyy3w06fj"]
+
+[ext_resource type="Texture2D" uid="uid://dqis6utk2r47p" path="res://assets/sprites/slime_green.png" id="1_xavq0"]
+[ext_resource type="Script" path="res://scripts/slime_resurrect.gd" id="2_57gw4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3fls0"]
+atlas = ExtResource("1_xavq0")
+region = Rect2(0, 8, 24, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aa3s6"]
+size = Vector2(10, 9)
+
+[node name="Slime" type="Sprite2D"]
+position = Vector2(0, -4)
+texture = SubResource("AtlasTexture_3fls0")
+
+[node name="ResurrectCollision" type="Area2D" parent="."]
+script = ExtResource("2_57gw4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ResurrectCollision"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_aa3s6")
+
+[connection signal="body_entered" from="ResurrectCollision" to="ResurrectCollision" method="_on_body_entered"]
