@@ -82,6 +82,7 @@ func _process(delta: float) -> void:
 		fully_dead = true
 		dead = true
 		Singleton.current_character = null
+		Singleton.player_position = global_position
 		print("end of the function")
 		playercontrol = false
 
@@ -152,7 +153,6 @@ func _physics_process(delta):
 	var AI_input := current_agent_position.direction_to(next_path_position)
 
 	if Singleton.current_character:
-	
 		if not playercontrol:
 			movement_target_position = Singleton.current_character.global_position
 			set_movement_target(movement_target_position)

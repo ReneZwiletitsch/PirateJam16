@@ -20,6 +20,8 @@ var basic_character_range := 50
 var necromancy_range := 200
 var game_lost := false
 
+var staff_instance = null
+
 
 func player_damage(strenght):
 	current_player_hp -= strenght
