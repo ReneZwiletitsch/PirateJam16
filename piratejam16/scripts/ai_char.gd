@@ -4,6 +4,7 @@ extends CharacterBody2D
 @onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
 var movement_speed: float = 200.0
 var willpower: float=0
+var movement_target_position: Vector2 = Vector2(0.0,0.0)
 
 @onready var current_char := AIcharacter.new()
 
@@ -12,9 +13,16 @@ var willpower: float=0
 @onready var dead = true
 @onready var fully_dead := false
 
+
+@onready var attack_rdy := true
+@onready var aim
+
+signal player_attack_woundup(aim)
+
+
 #temp
 @onready var test := true
-@onready var attack_rdy := true
+
 @onready var test2
 
 
@@ -33,7 +41,7 @@ func necromancy():
 		dead = true
 		playercontrol = false
 	
-	elif get_local_mouse_position().length() < 20 and dead and not fully_dead and (global_position-Singleton.player_position).length() <200 and Singleton.current_character == null:
+	elif get_local_mouse_position().length() < 20 and dead and not fully_dead and (global_position-Singleton.player_position).length() <Singleton.necromancy_range and Singleton.current_character == null:
 		print("did a necromancy")
 		Singleton.player_died = false
 		Singleton.current_character = $"."
@@ -73,7 +81,6 @@ func _process(delta: float) -> void:
 		print("player just died, doing fully_dead thing")
 		fully_dead = true
 		dead = true
-		Singleton.player_position = global_position
 		Singleton.current_character = null
 		print("end of the function")
 		playercontrol = false
@@ -83,7 +90,7 @@ func actor_setup():
 	await get_tree().physics_frame
 
 	# Now that the navigation map is no longer empty, set the movement target.
-	set_movement_target(Vector2(0.0,0.0))
+	set_movement_target(movement_target_position)
 
 func set_movement_target(movement_target: Vector2):
 	navigation_agent.target_position = movement_target
@@ -91,9 +98,9 @@ func set_movement_target(movement_target: Vector2):
 
 
 func character_damage():
-	if (global_position-Singleton.player_position).length()<Singleton.basic_character_range and not playercontrol and not dead:
+	if (global_position-Singleton.current_character.global_position).length()<Singleton.basic_character_range and not playercontrol and not dead:
 		current_char.curr_hp -= Singleton.current_player_strenght
-		#print("character got dmg",current_char.curr_hp)
+		print("character got dmg",current_char.curr_hp)
 		if current_char.curr_hp <=0:
 			dead = true
 			print("character has died")
@@ -104,14 +111,22 @@ func character_damage():
 func attack():
 	attack_rdy = false
 	$Attack_timer.start(Singleton.max_attack_cooldown/current_char.dex)
+	if not playercontrol:
+		aim = (Singleton.current_character.global_position-global_position).normalized()
+	else:
+		aim = Singleton.current_character.get_local_mouse_position().normalized()
 	
+
+func _on_attack_timer_timeout() -> void:
+	$Attack_timer.stop()
+	attack_rdy = true
+	#ai attack
 	if not playercontrol and Singleton.current_character != null:
 		#check if player is in cone, basically same as other way around
-		var mouse_vec = (Singleton.current_character.global_position-global_position).normalized()
+
 		var enemy_pos = Singleton.current_character.global_position-global_position
 		var enemy_vec = enemy_pos.normalized()
-		if abs(acos(mouse_vec.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< Singleton.basic_character_range:
-			print("player is attacked")
+		if abs(acos(aim.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< Singleton.basic_character_range:
 			Singleton.player_damage(current_char.strenght)
 			
 		else:
@@ -119,11 +134,10 @@ func attack():
 			print(enemy_pos.length())
 			pass
 
-	
+	elif playercontrol:
+		player_attack_woundup.emit(aim)
 
-func _on_attack_timer_timeout() -> void:
-	$Attack_timer.stop()
-	attack_rdy = true
+
 	
 
 
@@ -131,32 +145,39 @@ func _on_attack_timer_timeout() -> void:
 
 func _physics_process(delta):
 	#walk towards player, except if you are possesed by the player; temp, should be dependent on sight range or something
-	if not playercontrol:
-		set_movement_target(Singleton.player_position)
-		
-	#temp, replace by logic where the body wants to go
-	else:
-		set_movement_target(Vector2(0.0,0.0))
-		
+	
 	var current_agent_position: Vector2 = global_position
 	var next_path_position: Vector2 = navigation_agent.get_next_path_position()
 	var player_input_direction := Input.get_vector("left", "right", "up", "down")
 	var AI_input := current_agent_position.direction_to(next_path_position)
 
+	if Singleton.current_character:
 	
-	#if we are in range of the player, stop walking and attack
-	if not dead and current_agent_position.distance_to(Singleton.player_position) < Singleton.basic_character_range and attack_rdy and not playercontrol:
-		AI_input = Vector2(0,0)
 		if not playercontrol:
-			attack()
-	#if we are the player and at ai's target, stop ai input
-	elif playercontrol and current_agent_position.distance_to(Vector2(0.0,0.0))<Singleton.basic_character_range:
+			movement_target_position = Singleton.current_character.global_position
+			set_movement_target(movement_target_position)
+			
+		#temp, replace by logic where the player's body wants to go
+		else:
+			movement_target_position = Vector2(0.0,0.0)
+			set_movement_target(movement_target_position)
+			
+	
+		#if we are in range of the player, stop walking and attack
+		if not dead and current_agent_position.distance_to(movement_target_position) < Singleton.basic_character_range*0.5 and attack_rdy and not playercontrol: #temp 0.5 means they don't attack at the edge of their range and miss all the time
+			AI_input = Vector2(0,0)
+			if not playercontrol:
+				attack()
+				
+		#if we are the player and at ai's target, stop ai input
+		elif playercontrol and current_agent_position.distance_to(Vector2(0.0,0.0))<Singleton.basic_character_range:
+			AI_input = Vector2(0,0)
+
+	else:
 		AI_input = Vector2(0,0)
 
 
-
-	if not dead:
-		Singleton.player_position = global_position
+	if not dead and attack_rdy:
 		#if the player doesn't input anything, follow a path at full speed, otherwise battle the player over control
 		if (player_input_direction == Vector2(0,0) or not playercontrol):
 			velocity = AI_input * movement_speed

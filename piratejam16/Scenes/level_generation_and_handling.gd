@@ -32,18 +32,7 @@ func _input(event):
 			if Singleton.current_character.attack_rdy:
 				Singleton.current_character.attack() #starts cooldown
 				
-				for i in all_ai_char_instances:
-					#check if in cone
-					var mouse_vec = Singleton.current_character.get_local_mouse_position().normalized()
-					
-					var enemy_pos = (i.global_position-Singleton.current_character.global_position)
-					var enemy_vec = enemy_pos.normalized()
-					if abs(acos(mouse_vec.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< Singleton.basic_character_range:
-						print("is attacked")
-						i.character_damage()
-					else:
-						print("dodged")
-				print("#########")
+
 					
 			else: 
 				print("on cooldown",Singleton.max_attack_cooldown/Singleton.current_player_dex)
@@ -56,6 +45,13 @@ func _input(event):
 
 
 
+func player_attack(mouse_vec):
+	for i in all_ai_char_instances:
+		#check if in cone	
+		var enemy_pos = (i.global_position-Singleton.current_character.global_position)
+		var enemy_vec = enemy_pos.normalized()
+		if abs(acos(mouse_vec.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< Singleton.basic_character_range:
+			i.character_damage()
 
 
 
@@ -71,7 +67,8 @@ func spawn_ai_char(dead):
 	add_child(instance,true)
 	all_ai_char_instances.append(instance)
 	instance.dead = dead
-	
+	for i in all_ai_char_instances:
+		i.player_attack_woundup.connect(player_attack)
 	
 	
 	
@@ -81,4 +78,14 @@ func spawn_ai_char(dead):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	if Singleton.current_character == null:
+		var alive_check = false
+		for i in all_ai_char_instances:
+			if (i.global_position - Singleton.player_position).length()< Singleton.necromancy_range and i.dead and not i.fully_dead:
+				alive_check = true
+		if not alive_check:
+			Singleton.game_lost = true
+			print("YOU DIED")
+				
+			
+			
