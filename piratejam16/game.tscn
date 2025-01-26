@@ -1,7 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://do5rj2k3k24xt"]
+[gd_scene load_steps=6 format=4 uid="uid://do5rj2k3k24xt"]
 
 [ext_resource type="PackedScene" uid="uid://bqvoixwaff742" path="res://Scenes/player.tscn" id="1_nnp71"]
-
 [ext_resource type="Texture2D" uid="uid://b6cup8j5libu0" path="res://assets/tiles/tiles_dungeon_2.png" id="1_noskd"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_ba4cn"]
