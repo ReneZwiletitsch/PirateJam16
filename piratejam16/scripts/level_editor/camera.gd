@@ -15,12 +15,9 @@ func _input(event):
 	if event.is_action_pressed("ScrollZoomOut"):
 		if zoom > ZoomMin:
 			zoom -= ZoomSpd
-		print("Zoom out")
 	if event.is_action_pressed("ScrollZoomIn"):
 		if zoom < ZoomMax:
 			zoom +=ZoomSpd
-		print("Zoom in")
-	print(zoom)
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
