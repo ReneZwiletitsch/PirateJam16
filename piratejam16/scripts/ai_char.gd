@@ -16,6 +16,8 @@ var movement_target_position: Vector2 = Vector2(0.0,0.0)
 
 @onready var attack_rdy := true
 @onready var aim
+@onready var target_polygon = Polygon2D.new()
+@onready var last_animation = "alive_idle"
 
 signal player_attack_woundup(aim)
 
@@ -24,6 +26,7 @@ signal player_attack_woundup(aim)
 @onready var test := true
 
 @onready var test2
+
 
 
 func debug_message():
@@ -42,9 +45,9 @@ func necromancy():
 		dead = true
 		playercontrol = false
 	
-	elif get_local_mouse_position().length() < 20 and dead and not fully_dead and (global_position-Singleton.player_position).length() <Singleton.necromancy_range and Singleton.current_character == null:
-		print("did a necromancy")
-		$AnimatedSprite2D.set_animation("undead")
+	elif get_local_mouse_position().length() < 32 and dead and not fully_dead and (global_position-Singleton.player_position).length() <Singleton.necromancy_range and Singleton.current_character == null:
+		print("did a necromancy")		
+		$AnimatedSprite2D.set_animation("undead_idle")
 		Singleton.player_died = false
 		Singleton.current_character = $"."
 		dead = false
@@ -60,6 +63,16 @@ func necromancy():
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+
+	add_child(target_polygon)
+	var cone_corners := PackedVector2Array([])
+	var radius_vector := Vector2(Singleton.basic_character_range,0)
+	cone_corners.append(Vector2(0,0))
+	for i in range(21):
+		cone_corners.append(radius_vector.rotated(Singleton.basic_attack_angle*i/10))
+	target_polygon.set_polygon(cone_corners)	
+	target_polygon.set_color(Color(0, 1, 1, .5))
+	
 	$CollisionShape2D.disabled = true
 	
 	
@@ -88,6 +101,11 @@ func _process(delta: float) -> void:
 		$AnimatedSprite2D.set_animation("deadge")
 		print("end of the function")
 		playercontrol = false
+		
+	elif playercontrol and attack_rdy:
+		aim = Singleton.current_character.get_local_mouse_position().normalized()
+		target_polygon.rotate(aim.angle()-target_polygon.get_rotation()-PI/4)		
+	
 
 func actor_setup():
 	# Wait for the first physics frame so the NavigationServer can sync.
@@ -118,10 +136,11 @@ func attack():
 	$Attack_timer.start(Singleton.max_attack_cooldown/current_char.dex)
 	if not playercontrol:
 		aim = (Singleton.current_character.global_position-global_position).normalized()
+		target_polygon.rotate(aim.angle()-target_polygon.get_rotation()-PI/4)
 	else:
 		aim = Singleton.current_character.get_local_mouse_position().normalized()
-	
-
+		target_polygon.rotate(aim.angle()-target_polygon.get_rotation()-PI/4)
+		
 func _on_attack_timer_timeout() -> void:
 	$Attack_timer.stop()
 	attack_rdy = true
@@ -141,9 +160,6 @@ func _on_attack_timer_timeout() -> void:
 
 	elif playercontrol:
 		player_attack_woundup.emit(aim)
-
-
-	
 
 
 
@@ -188,6 +204,22 @@ func _physics_process(delta):
 		else:
 			velocity = (AI_input * willpower + player_input_direction*(1-willpower))* movement_speed # *1.5 if we want to make player character faster. but for now i'll keep it the same, this way switching characters is important in combat
 		
+		var animation_name := ""
+		
+		
+		if playercontrol:
+			animation_name += "undead_walking"
+		else:
+			animation_name += "alive_walking"
+			
+		if velocity[0]>0:
+			animation_name += "_right"
+		else:
+			animation_name +="_left"
+
+		if animation_name != last_animation:
+			$AnimatedSprite2D.set_animation(animation_name)
+			last_animation = animation_name
 		move_and_slide()
 
 
