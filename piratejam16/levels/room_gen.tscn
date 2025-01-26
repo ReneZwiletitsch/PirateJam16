@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://by6frj64pj1hn"]
+
+[ext_resource type="Texture2D" uid="uid://b6cup8j5libu0" path="res://assets/tiles/tiles_dungeon_2.png" id="1_hqrbv"]
+[ext_resource type="Script" path="res://scripts/level_editor/room_gen.gd" id="2_q4n4h"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qqrb3"]
+texture = ExtResource("1_hqrbv")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+7:0/0 = 0
+7:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+0:1/0 = 0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+0:7/0 = 0
+0:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:7/0 = 0
+1:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+7:7/0 = 0
+7:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+7:1/0 = 0
+7:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="TileSet" id="TileSet_qlj0l"]
+physics_layer_0/collision_layer = 1
+navigation_layer_0/layers = 1
+custom_data_layer_0/name = "TransitionDir"
+custom_data_layer_0/type = 2
+custom_data_layer_1/name = ""
+custom_data_layer_1/type = 0
+sources/2 = SubResource("TileSetAtlasSource_qqrb3")
+
+[node name="RoomGen" type="Node2D"]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+scale = Vector2(4, 4)
+tile_map_data = PackedByteArray(0, 0, 7, 0, 1, 0, 2, 0, 7, 0, 0, 0, 0, 0, 7, 0, 2, 0, 2, 0, 7, 0, 7, 0, 0, 0, 6, 0, 2, 0, 2, 0, 0, 0, 7, 0, 0, 0, 6, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0)
+tile_set = SubResource("TileSet_qlj0l")
+script = ExtResource("2_q4n4h")
