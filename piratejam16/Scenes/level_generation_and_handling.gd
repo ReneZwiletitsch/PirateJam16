@@ -23,6 +23,10 @@ func _input(event):
 			i.necromancy()
 			if i.playercontrol:
 				Singleton.current_character = i
+				#despawn the staff
+				remove_child(Singleton.staff_instance)
+				Singleton.staff_instance = null
+				
 
 	#player attacking
 	elif event.is_action_pressed("attack"):
@@ -67,18 +71,22 @@ func spawn_ai_char(dead):
 	add_child(instance,true)
 	all_ai_char_instances.append(instance)
 	instance.dead = dead
-	for i in all_ai_char_instances:
-		i.player_attack_woundup.connect(player_attack)
+	instance.player_attack_woundup.connect(player_attack)
+	if dead:
+		instance.find_child("AnimatedSprite2D").set_animation("dead")
 	
-	
-	
-
-
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if Singleton.current_character == null:
+		if not Singleton.staff_instance:
+			#spawn staff
+			var scene = preload("res://Scenes/staff.tscn")
+			var instance = scene.instantiate()
+			instance.position = Singleton.player_position
+			add_child(instance,true)
+			Singleton.staff_instance = instance
+						
 		var alive_check = false
 		for i in all_ai_char_instances:
 			if (i.global_position - Singleton.player_position).length()< Singleton.necromancy_range and i.dead and not i.fully_dead:
