@@ -45,7 +45,6 @@ animations = [{
 radius = 7.07107
 
 [node name="AIChar" type="CharacterBody2D"]
-scale = Vector2(0.5, 0.5)
 script = ExtResource("2_moamb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
