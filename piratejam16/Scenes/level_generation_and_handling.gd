@@ -71,14 +71,10 @@ func spawn_ai_char(dead):
 	add_child(instance,true)
 	all_ai_char_instances.append(instance)
 	instance.dead = dead
-	for i in all_ai_char_instances:
-		i.player_attack_woundup.connect(player_attack)
+	instance.player_attack_woundup.connect(player_attack)
+	if dead:
+		instance.find_child("AnimatedSprite2D").set_animation("dead")
 	
-	
-	
-
-
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -91,7 +87,6 @@ func _process(delta: float) -> void:
 			add_child(instance,true)
 			Singleton.staff_instance = instance
 						
-			
 		var alive_check = false
 		for i in all_ai_char_instances:
 			if (i.global_position - Singleton.player_position).length()< Singleton.necromancy_range and i.dead and not i.fully_dead:

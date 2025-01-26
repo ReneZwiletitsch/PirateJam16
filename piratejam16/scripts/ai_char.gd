@@ -33,6 +33,7 @@ func debug_message():
 
 func necromancy():
 	if not dead and playercontrol:
+		$AnimatedSprite2D.set_animation("dead")
 		Singleton.player_position = global_position
 		Singleton.current_player_hp = 0
 		Singleton.current_player_strenght = 0
@@ -43,6 +44,7 @@ func necromancy():
 	
 	elif get_local_mouse_position().length() < 20 and dead and not fully_dead and (global_position-Singleton.player_position).length() <Singleton.necromancy_range and Singleton.current_character == null:
 		print("did a necromancy")
+		$AnimatedSprite2D.set_animation("undead")
 		Singleton.player_died = false
 		Singleton.current_character = $"."
 		dead = false
@@ -82,7 +84,8 @@ func _process(delta: float) -> void:
 		fully_dead = true
 		dead = true
 		Singleton.current_character = null
-		Singleton.player_position = global_position
+		Singleton.player_position = global_position+ Vector2(10,0)
+		$AnimatedSprite2D.set_animation("deadge")
 		print("end of the function")
 		playercontrol = false
 
@@ -106,6 +109,7 @@ func character_damage():
 			dead = true
 			print("character has died")
 			current_char.curr_hp = current_char.max_hp
+			$AnimatedSprite2D.set_animation("dead")
 
 
 

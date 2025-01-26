@@ -1,41 +1,43 @@
-[gd_scene load_steps=9 format=3 uid="uid://dm77ptpohrroj"]
+[gd_scene load_steps=8 format=3 uid="uid://dm77ptpohrroj"]
 
-[ext_resource type="Texture2D" uid="uid://g7t1b11dyq6v" path="res://assets/sprites/temporary/knight.png" id="1_4xppw"]
+[ext_resource type="Texture2D" uid="uid://dwmotiryhyoci" path="res://assets/sprites/characters/fully_dead.png" id="2_62yb5"]
 [ext_resource type="Script" path="res://scripts/ai_char.gd" id="2_moamb"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_o1agy"]
-atlas = ExtResource("1_4xppw")
-region = Rect2(128, 64, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_d3iii"]
-atlas = ExtResource("1_4xppw")
-region = Rect2(160, 64, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_i0621"]
-atlas = ExtResource("1_4xppw")
-region = Rect2(192, 64, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gri4t"]
-atlas = ExtResource("1_4xppw")
-region = Rect2(224, 64, 32, 32)
+[ext_resource type="Texture2D" uid="uid://bkk36vpuvcbpl" path="res://assets/sprites/characters/Basic_dead.png" id="2_sg3p5"]
+[ext_resource type="Texture2D" uid="uid://c3feec1ugw6on" path="res://assets/sprites/characters/Basic_alive.png" id="4_i6bii"]
+[ext_resource type="Texture2D" uid="uid://bbxth5j8bu0me" path="res://assets/sprites/characters/Basic_undead.png" id="4_r1r8o"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_h1yg5"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_o1agy")
+"texture": ExtResource("2_sg3p5")
+}],
+"loop": true,
+"name": &"dead",
+"speed": 5.0
 }, {
+"frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_d3iii")
+"texture": ExtResource("2_62yb5")
+}],
+"loop": true,
+"name": &"deadge",
+"speed": 5.0
 }, {
+"frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_i0621")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_gri4t")
+"texture": ExtResource("4_i6bii")
 }],
 "loop": true,
 "name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_r1r8o")
+}],
+"loop": true,
+"name": &"undead",
 "speed": 5.0
 }]
 
@@ -43,12 +45,13 @@ animations = [{
 radius = 7.07107
 
 [node name="AIChar" type="CharacterBody2D"]
+scale = Vector2(0.5, 0.5)
 script = ExtResource("2_moamb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_h1yg5")
+animation = &"dead"
 autoplay = "default"
-frame_progress = 0.209059
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_gebq4")
