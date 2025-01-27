@@ -64,7 +64,6 @@ func necromancy():
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 
-	add_child(target_polygon)
 	var cone_corners := PackedVector2Array([])
 	var radius_vector := Vector2(Singleton.basic_character_range,0)
 	cone_corners.append(Vector2(0,0))
@@ -72,6 +71,8 @@ func _ready() -> void:
 		cone_corners.append(radius_vector.rotated(Singleton.basic_attack_angle*i/10))
 	target_polygon.set_polygon(cone_corners)	
 	target_polygon.set_color(Color(0, 1, 1, .5))
+	target_polygon.visible = false
+	add_child(target_polygon)
 	
 	$CollisionShape2D.disabled = true
 	
@@ -133,6 +134,7 @@ func character_damage():
 
 func attack():
 	attack_rdy = false
+	target_polygon.visible = true
 	$Attack_timer.start(Singleton.max_attack_cooldown/current_char.dex)
 	if not playercontrol:
 		aim = (Singleton.current_character.global_position-global_position).normalized()
@@ -143,6 +145,7 @@ func attack():
 		
 func _on_attack_timer_timeout() -> void:
 	$Attack_timer.stop()
+	target_polygon.visible = false
 	attack_rdy = true
 	#ai attack
 	if not playercontrol and Singleton.current_character != null:

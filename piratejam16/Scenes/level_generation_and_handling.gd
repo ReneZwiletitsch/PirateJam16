@@ -93,7 +93,7 @@ func _process(delta: float) -> void:
 				alive_check = true
 		if not alive_check:
 			Singleton.game_lost = true
-			print("YOU DIED")
+			#print("YOU DIED")
 				
 			
 			
