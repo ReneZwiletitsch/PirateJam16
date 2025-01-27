@@ -23,6 +23,9 @@ var game_lost := false
 var staff_instance = null
 
 
+
+
+
 func player_damage(strenght):
 	current_player_hp -= strenght
 	if current_player_hp <=0:

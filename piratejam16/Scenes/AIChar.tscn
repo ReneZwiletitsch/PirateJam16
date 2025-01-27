@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://dm77ptpohrroj"]
+[gd_scene load_steps=30 format=3 uid="uid://dm77ptpohrroj"]
 
 [ext_resource type="Texture2D" uid="uid://dwmotiryhyoci" path="res://assets/sprites/characters/fully_dead.png" id="2_62yb5"]
 [ext_resource type="Script" path="res://scripts/ai_char.gd" id="2_moamb"]
@@ -9,6 +9,10 @@
 [ext_resource type="Texture2D" uid="uid://b5r3umso2ul3v" path="res://assets/sprites/characters/Basic_alive-Sheet.png" id="4_yp5so"]
 [ext_resource type="Texture2D" uid="uid://ds1i7gbxe4fvg" path="res://assets/sprites/characters/Basic_undead_mirrored-Sheet.png" id="6_g1b3n"]
 [ext_resource type="Texture2D" uid="uid://hrmu7j50hwl6" path="res://assets/sprites/characters/Basic_undead-Sheet.png" id="6_k55w1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_45456"]
+atlas = ExtResource("3_ypjk7")
+region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bt5dx"]
 atlas = ExtResource("3_ypjk7")
@@ -41,6 +45,10 @@ region = Rect2(128, 0, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_jafu4"]
 atlas = ExtResource("4_yp5so")
 region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ntwlw"]
+atlas = ExtResource("6_g1b3n")
+region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_28i20"]
 atlas = ExtResource("6_g1b3n")
@@ -78,10 +86,18 @@ region = Rect2(192, 0, 64, 64)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_45456")
+}],
+"loop": true,
+"name": &"alive_idle_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("4_i6bii")
 }],
 "loop": true,
-"name": &"alive_idle",
+"name": &"alive_idle_right",
 "speed": 5.0
 }, {
 "frames": [{
@@ -136,10 +152,18 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_ntwlw")
+}],
+"loop": true,
+"name": &"undead_idle_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("4_r1r8o")
 }],
 "loop": true,
-"name": &"undead_idle",
+"name": &"undead_idle_right",
 "speed": 5.0
 }, {
 "frames": [{
@@ -181,11 +205,12 @@ animations = [{
 radius = 7.07107
 
 [node name="AIChar" type="CharacterBody2D"]
+z_index = 1
 script = ExtResource("2_moamb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_h1yg5")
-animation = &"alive_walking_left"
+animation = &"undead_idle_left"
 autoplay = "alive_walking_right"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

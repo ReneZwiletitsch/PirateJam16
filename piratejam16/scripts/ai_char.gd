@@ -17,7 +17,8 @@ var movement_target_position: Vector2 = Vector2(0.0,0.0)
 @onready var attack_rdy := true
 @onready var aim
 @onready var target_polygon = Polygon2D.new()
-@onready var last_animation = "alive_idle"
+@onready var last_animation = ""
+@onready var last_direction = "right"
 
 signal player_attack_woundup(aim)
 
@@ -37,7 +38,7 @@ func debug_message():
 func necromancy():
 	if not dead and playercontrol:
 		$AnimatedSprite2D.set_animation("dead")
-		Singleton.player_position = global_position
+		Singleton.player_position = global_position + Vector2(0,40)
 		Singleton.current_player_hp = 0
 		Singleton.current_player_strenght = 0
 		Singleton.current_player_dex = 0
@@ -47,7 +48,8 @@ func necromancy():
 	
 	elif get_local_mouse_position().length() < 32 and dead and not fully_dead and (global_position-Singleton.player_position).length() <Singleton.necromancy_range and Singleton.current_character == null:
 		print("did a necromancy")		
-		$AnimatedSprite2D.set_animation("undead_idle")
+		$AnimatedSprite2D.set_animation("undead_idle_right")
+		last_animation = "undead_idle_right"
 		Singleton.player_died = false
 		Singleton.current_character = $"."
 		dead = false
@@ -98,8 +100,11 @@ func _process(delta: float) -> void:
 		fully_dead = true
 		dead = true
 		Singleton.current_character = null
-		Singleton.player_position = global_position+ Vector2(10,0)
+		Singleton.player_position = global_position+ Vector2(0,40)
 		$AnimatedSprite2D.set_animation("deadge")
+		self.set_scale(Vector2(0.5,0.5))
+		self.position += Vector2(0,16)
+		self.set_z_index(0)
 		print("end of the function")
 		playercontrol = false
 		
@@ -137,9 +142,13 @@ func attack():
 	target_polygon.visible = true
 	$Attack_timer.start(Singleton.max_attack_cooldown/current_char.dex)
 	if not playercontrol:
+		last_animation = "alive_idle_"+last_direction
+		$AnimatedSprite2D.set_animation(last_animation)
 		aim = (Singleton.current_character.global_position-global_position).normalized()
 		target_polygon.rotate(aim.angle()-target_polygon.get_rotation()-PI/4)
 	else:
+		last_animation = "undead_idle_"+last_direction
+		$AnimatedSprite2D.set_animation(last_animation)
 		aim = Singleton.current_character.get_local_mouse_position().normalized()
 		target_polygon.rotate(aim.angle()-target_polygon.get_rotation()-PI/4)
 		
@@ -211,14 +220,20 @@ func _physics_process(delta):
 		
 		
 		if playercontrol:
-			animation_name += "undead_walking"
+			animation_name += "undead"
 		else:
-			animation_name += "alive_walking"
+			animation_name += "alive"
 			
 		if velocity[0]>0:
-			animation_name += "_right"
-		else:
-			animation_name +="_left"
+			animation_name += "_walking_right"
+			last_direction = "right"
+		elif velocity[0]<0:
+			animation_name +="_walking_left"
+			last_direction = "left"
+		else:# velocity[0]<0:
+			animation_name +="_idle_"
+			animation_name += last_direction
+			
 
 		if animation_name != last_animation:
 			$AnimatedSprite2D.set_animation(animation_name)
@@ -231,7 +246,7 @@ func _physics_process(delta):
 class AIcharacter:
 	#stats 
 	var rng = RandomNumberGenerator.new()
-	var max_hp :=  rng.randi_range(1, 100)
+	var max_hp := rng.randi_range(1, 100)
 	var strenght := rng.randi_range(1, 10)
 	var speed := rng.randi_range(50, 100)
 	var dex := rng.randi_range(1, 100)

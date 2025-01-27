@@ -36,8 +36,6 @@ func _input(event):
 			if Singleton.current_character.attack_rdy:
 				Singleton.current_character.attack() #starts cooldown
 				
-
-					
 			else: 
 				print("on cooldown",Singleton.max_attack_cooldown/Singleton.current_player_dex)
 		else:
@@ -83,6 +81,8 @@ func _process(delta: float) -> void:
 			#spawn staff
 			var scene = preload("res://Scenes/staff.tscn")
 			var instance = scene.instantiate()
+			instance.rotate(PI/2)
+			instance.set_scale(Vector2(0.7,0.7))
 			instance.position = Singleton.player_position
 			add_child(instance,true)
 			Singleton.staff_instance = instance
