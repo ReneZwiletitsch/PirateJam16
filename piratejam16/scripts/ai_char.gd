@@ -22,11 +22,10 @@ var movement_target_position: Vector2 = Vector2(0.0,0.0)
 
 signal player_attack_woundup(aim)
 
+@onready var boss_fight := false
 
-#temp
-@onready var test := true
 
-@onready var test2
+
 
 
 
@@ -46,19 +45,19 @@ func necromancy():
 		dead = true
 		playercontrol = false
 	
-	elif get_local_mouse_position().length() < 32 and dead and not fully_dead and (global_position-Singleton.player_position).length() <Singleton.necromancy_range and Singleton.current_character == null:
+	elif (get_local_mouse_position().length() < 32 and dead and not fully_dead and (global_position-Singleton.player_position).length() <Singleton.necromancy_range and Singleton.current_character == null) or boss_fight:
 		print("did a necromancy")		
 		$AnimatedSprite2D.set_animation("undead_idle_right")
-		last_animation = "undead_idle_right"
-		Singleton.player_died = false
-		Singleton.current_character = $"."
 		dead = false
-		playercontrol = true
-		Singleton.current_player_hp = current_char.curr_hp
-		Singleton.current_player_strenght = current_char.strenght
-		Singleton.current_player_dex = current_char.dex
-		print("player now has this hp: ",Singleton.current_player_hp)
-		print("player now has this str: ",Singleton.current_player_strenght)
+		last_animation = "undead_idle_right"
+		if not boss_fight:
+			Singleton.player_died = false
+			Singleton.current_character = $"."
+			playercontrol = true
+			Singleton.current_player_hp = current_char.curr_hp
+			Singleton.current_player_strenght = current_char.strenght
+			Singleton.current_player_dex = current_char.dex
+
 				
 
 	
@@ -164,11 +163,10 @@ func _on_attack_timer_timeout() -> void:
 		var enemy_vec = enemy_pos.normalized()
 		if abs(acos(aim.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< Singleton.basic_character_range:
 			Singleton.player_damage(current_char.strenght)
+			if boss_fight:
+				Singleton.boss_damage(current_char.strenght)
 			
-		else:
-			print("player dodged")
-			print(enemy_pos.length())
-			pass
+
 
 	elif playercontrol:
 		player_attack_woundup.emit(aim)
@@ -195,30 +193,37 @@ func _physics_process(delta):
 			set_movement_target(movement_target_position)
 			
 	
-		#if we are in range of the player, stop walking and attack
-		if not dead and current_agent_position.distance_to(movement_target_position) < Singleton.basic_character_range*0.5 and attack_rdy and not playercontrol: #temp 0.5 means they don't attack at the edge of their range and miss all the time
-			AI_input = Vector2(0,0)
-			if not playercontrol:
-				attack()
-				
-		#if we are the player and at ai's target, stop ai input
-		elif playercontrol and current_agent_position.distance_to(Vector2(0.0,0.0))<Singleton.basic_character_range:
-			AI_input = Vector2(0,0)
+		if not boss_fight or player_input_direction== Vector2(0,0):
+			#if we are in range of the player, stop walking and attack
+			if not dead and current_agent_position.distance_to(movement_target_position) < Singleton.basic_character_range*0.5 and attack_rdy and not playercontrol: #temp 0.5 means they don't attack at the edge of their range and miss all the time
+				AI_input = Vector2(0,0)
+				if not playercontrol:
+					attack()
+					
+			#if we are the player and at ai's target, stop ai input
+			elif playercontrol and current_agent_position.distance_to(Vector2(0.0,0.0))<Singleton.basic_character_range:
+				AI_input = Vector2(0,0)
 
 	else:
 		AI_input = Vector2(0,0)
 
 
 	if not dead and attack_rdy:
-		#if the player doesn't input anything, follow a path at full speed, otherwise battle the player over control
-		if (player_input_direction == Vector2(0,0) or not playercontrol):
+		#if the player doesn't input anything, follow a path at full speed, otherwise battle the player over controldddddd
+		if (player_input_direction == Vector2(0,0)) or (not playercontrol and not boss_fight):
 			velocity = AI_input * movement_speed
 		else:
 			velocity = (AI_input * willpower + player_input_direction*(1-willpower))* movement_speed # *1.5 if we want to make player character faster. but for now i'll keep it the same, this way switching characters is important in combat
 		
+		
+		
+		
+		
+		
+		
+		move_and_slide()
+		#changing animations
 		var animation_name := ""
-		
-		
 		if playercontrol:
 			animation_name += "undead"
 		else:
@@ -230,15 +235,13 @@ func _physics_process(delta):
 		elif velocity[0]<0:
 			animation_name +="_walking_left"
 			last_direction = "left"
-		else:# velocity[0]<0:
+		else:
 			animation_name +="_idle_"
 			animation_name += last_direction
-			
-
 		if animation_name != last_animation:
 			$AnimatedSprite2D.set_animation(animation_name)
 			last_animation = animation_name
-		move_and_slide()
+		
 
 
 
@@ -246,7 +249,7 @@ func _physics_process(delta):
 class AIcharacter:
 	#stats 
 	var rng = RandomNumberGenerator.new()
-	var max_hp := rng.randi_range(1, 100)
+	var max_hp := 99999#rng.randi_range(1, 100)
 	var strenght := rng.randi_range(1, 10)
 	var speed := rng.randi_range(50, 100)
 	var dex := rng.randi_range(1, 100)
