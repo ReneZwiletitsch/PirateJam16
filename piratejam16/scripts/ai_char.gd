@@ -3,7 +3,6 @@ extends CharacterBody2D
 
 @onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
 var movement_speed: float = 200.0
-var willpower: float=0
 var movement_target_position: Vector2 = Vector2(0.0,0.0)
 
 @onready var current_char := AIcharacter.new()
@@ -14,6 +13,7 @@ var movement_target_position: Vector2 = Vector2(0.0,0.0)
 @onready var fully_dead := false
 @onready var texture_type := "alive"
 @onready var character_index :=0
+@onready var attack_range := Singleton.basic_character_range
 
 
 @onready var attack_rdy := true
@@ -27,15 +27,16 @@ signal player_attack_woundup(aim,boss)
 
 @onready var boss_fight := false
 
-enum character {alive,dead,undead,fully_dead,fighting_boss,boss}
-enum attribute {character_index,dead,fully_dead,playercontrol,texture_type}
+enum character {alive,dead,undead,fully_dead,fighting_boss,boss,necromancer}
+enum attribute {character_index,dead,fully_dead,playercontrol,texture_type,attack_range}
 var attribute_list = [
-			[0,false,false,false,"alive"], #alive
-			[1,true,false,false,"dead"], #dead
-			[2,false,false,true,"undead"], #undead
-			[3,true,true,false,"deadge"], #fully dead
-			[4,false,false,false,"undead"], #fighting boss
-			[5,false,false,false,"boss"], #boss
+			[0,false,false,false,"alive",Singleton.basic_character_range], #alive
+			[1,true,false,false,"dead",Singleton.basic_character_range], #dead
+			[2,false,false,true,"undead",Singleton.basic_character_range], #undead
+			[3,true,true,false,"deadge",0], #fully dead
+			[4,false,false,false,"fighting_boss",Singleton.basic_character_range], #fighting boss
+			[5,false,false,false,"boss",Singleton.basic_character_range*2], #boss
+			[6,true,false,true,"necromancer",Singleton.basic_character_range], #necromancer
 			]
 
 
@@ -47,6 +48,7 @@ func load_attributes(char_to_load):
 	texture_type = attribute_list[char_to_load][attribute.texture_type]
 	character_index = attribute_list[char_to_load][attribute.character_index]
 	last_animation = texture_type+"_idle_right"
+	attack_range = attribute_list[char_to_load][attribute.attack_range]
 	$AnimatedSprite2D.set_animation(texture_type+"_idle_right")
 
 
@@ -60,8 +62,7 @@ func necromancy():
 		Singleton.current_character = null
 
 	
-	elif (get_local_mouse_position().length() < 32 and dead and not fully_dead and (global_position-Singleton.player_position).length() <Singleton.necromancy_range and Singleton.current_character == null) or boss_fight:
-		print("did a necromancy")				
+	elif (get_local_mouse_position().length() < 32 and dead and not fully_dead and (global_position-Singleton.player_position).length() <Singleton.necromancy_range and Singleton.current_character == null) or boss_fight:				
 		if boss_fight:
 			load_attributes(character.fighting_boss)
 		else:
@@ -79,7 +80,7 @@ func necromancy():
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var cone_corners := PackedVector2Array([])
-	var radius_vector := Vector2(Singleton.basic_character_range,0)
+	var radius_vector := Vector2(attack_range,0)
 	cone_corners.append(Vector2(0,0))
 	for i in range(21):
 		cone_corners.append(radius_vector.rotated(Singleton.basic_attack_angle*i/10))
@@ -91,7 +92,6 @@ func _ready() -> void:
 	$CollisionShape2D.disabled = true
 	
 	movement_speed = current_char.speed
-	willpower = current_char.willpower
 	
 	# These values need to be adjusted for the actor's speed
 	# and the navigation layout.
@@ -128,13 +128,20 @@ func set_movement_target(movement_target: Vector2):
 
 
 func character_damage():
-	if (global_position-Singleton.current_character.global_position).length()<Singleton.basic_character_range and not playercontrol and not dead:
+	if (global_position-Singleton.current_character.global_position).length()<attack_range and not playercontrol and not dead:
 		current_char.curr_hp -= Singleton.current_player_strenght
 		print("character got dmg",current_char.curr_hp)
 		if current_char.curr_hp <=0:
 			print("character has died")
 			current_char.curr_hp = current_char.max_hp
-			load_attributes(character.dead)
+			#if the character is undead go to fully dead, if alive go to dead
+			if character_index == attribute_list[character.alive][attribute.character_index]:
+				load_attributes(character.dead)
+			elif character_index == attribute_list[character.fighting_boss][attribute.character_index]:
+				load_attributes(character.fully_dead)
+				self.set_scale(Vector2(0.5,0.5))
+				self.position += Vector2(0,16)
+				self.set_z_index(0)
 
 
 func attack():
@@ -143,10 +150,8 @@ func attack():
 	$Attack_timer.start(Singleton.max_attack_cooldown/current_char.dex)
 	last_animation = texture_type+"_idle_"+last_direction
 	$AnimatedSprite2D.set_animation(last_animation)
-	print("match ", attribute_list[character.undead][attribute.character_index])
-	var test = 2
-	if character_index == attribute_list[character.undead][attribute.character_index]: #me
-		aim = Singleton.current_character.get_local_mouse_position().normalized()
+	if character_index == attribute_list[character.undead][attribute.character_index] or character_index == attribute_list[character.necromancer][attribute.character_index]: #me
+		aim = self.get_local_mouse_position().normalized()
 	elif character_index ==	attribute_list[character.boss][attribute.character_index]: #boss
 		#temp, random attacks
 		var rng = RandomNumberGenerator.new()
@@ -166,31 +171,29 @@ func _on_attack_timer_timeout() -> void:
 	target_polygon.visible = false
 	attack_rdy = true
 	
-	if character_index == attribute_list[character.undead][attribute.character_index]: #me
+	if character_index == attribute_list[character.undead][attribute.character_index] or character_index == attribute_list[character.necromancer][attribute.character_index]: #me
 		player_attack_woundup.emit(aim,false)
 	elif character_index == attribute_list[character.boss][attribute.character_index]: #boss
 		player_attack_woundup.emit(aim,true)
 	
-	elif character_index == attribute_list[character.alive][attribute.character_index]: #alive
-	
-	elif character_index == attribute_list[character.fighting_boss][attribute.character_index]: #fighting boss
-	
+	elif character_index == attribute_list[character.alive][attribute.character_index] and Singleton.current_character != null: #alive
+		var enemy_pos = Singleton.current_character.global_position-global_position
+		var enemy_vec = enemy_pos.normalized()
+		if abs(acos(aim.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< attack_range:
+			Singleton.player_damage(current_char.strenght)
+	elif character_index == attribute_list[character.fighting_boss][attribute.character_index] and Singleton.current_character != null: #fighting boss
+		var enemy_pos = Singleton.current_character.global_position-global_position
+		var enemy_vec = enemy_pos.normalized()
+		if abs(acos(aim.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< attack_range:
+			Singleton.boss_damage(current_char.strenght)
+		
+		
 		
 	else:
 		print("ERROR, SOMETHING WRONG WITH ATTACK")
+		print("probably no character")
 		
-	#ai attack
-	if not playercontrol and Singleton.current_character != null:
-		#check if player is in cone, basically same as other way around
 
-		var enemy_pos = Singleton.current_character.global_position-global_position
-		var enemy_vec = enemy_pos.normalized()
-		if abs(acos(aim.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< Singleton.basic_character_range:
-			Singleton.player_damage(current_char.strenght)
-			if character_index == attribute_list[character.boss][attribute.character_index]:
-				Singleton.boss_damage(current_char.strenght)
-			
-		
 
 
 
@@ -216,25 +219,27 @@ func _physics_process(delta):
 	
 		if not boss_fight or player_input_direction== Vector2(0,0):
 			#if we are in range of the player, stop walking and attack
-			if not dead and current_agent_position.distance_to(movement_target_position) < Singleton.basic_character_range*0.5 and attack_rdy and not playercontrol: #temp 0.5 means they don't attack at the edge of their range and miss all the time
+			if not dead and current_agent_position.distance_to(movement_target_position) < attack_range*0.5 and attack_rdy and not playercontrol: #temp 0.5 means they don't attack at the edge of their range and miss all the time
 				AI_input = Vector2(0,0)
 				if not playercontrol:
 					attack()
 					
 			#if we are the player and at ai's target, stop ai input
-			elif playercontrol and current_agent_position.distance_to(Vector2(0.0,0.0))<Singleton.basic_character_range:
+			elif playercontrol and current_agent_position.distance_to(Vector2(0.0,0.0))<attack_range:
 				AI_input = Vector2(0,0)
 
 	else:
 		AI_input = Vector2(0,0)
-
+	
+	if character_index == attribute_list[character.necromancer][attribute.character_index]:
+		AI_input = Vector2(0,0)
 
 	if not dead and attack_rdy:
 		#if the player doesn't input anything, follow a path at full speed, otherwise battle the player over controldddddd
 		if (player_input_direction == Vector2(0,0)) or (not playercontrol and not boss_fight):
 			velocity = AI_input * movement_speed
 		else:
-			velocity = (AI_input * willpower + player_input_direction*(1-willpower))* movement_speed # *1.5 if we want to make player character faster. but for now i'll keep it the same, this way switching characters is important in combat
+			velocity = (AI_input * current_char.willpower + player_input_direction*(1-current_char.willpower))* movement_speed # *1.5 if we want to make player character faster. but for now i'll keep it the same, this way switching characters is important in combat
 		
 		
 		move_and_slide()

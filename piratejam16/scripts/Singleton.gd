@@ -26,7 +26,7 @@ var staff_instance = null
 
 @onready var all_ai_char_instances =[]
 
-var boss_hp := 1000
+var boss_hp := 10000
 var boss_defeated := false
 
 
@@ -35,6 +35,7 @@ func player_damage(strenght):
 	if current_player_hp <=0:
 		current_player_hp = 0
 		player_died = true
+	print("player hp: ",current_player_hp)
 		
 func boss_damage(strenght):
 	boss_hp -= strenght

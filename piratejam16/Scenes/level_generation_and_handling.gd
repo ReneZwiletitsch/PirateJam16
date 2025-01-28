@@ -47,15 +47,14 @@ func _input(event):
 
 func player_attack(mouse_vec,boss):
 	for i in Singleton.all_ai_char_instances:
-		#check if in cone	
-		var enemy_pos = (i.global_position-Singleton.current_character.global_position)
-		var enemy_vec = enemy_pos.normalized()
-		if abs(acos(mouse_vec.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< Singleton.basic_character_range:
-			i.character_damage()
-			
+		if i.character_index != i.attribute_list[i.character.undead][i.attribute.character_index]:
+			#check if in cone	
+			var enemy_pos = (i.global_position-Singleton.current_character.global_position)
+			var enemy_vec = enemy_pos.normalized()
+			if abs(acos(mouse_vec.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< Singleton.basic_character_range:
+				i.character_damage()
+				
 	
-
-
 
 func spawn_ai_char(dead):
 	print("spawning")
