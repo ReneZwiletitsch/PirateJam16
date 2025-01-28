@@ -101,8 +101,8 @@ func spawn_boss():
 func spawn_necromancer():
 	print("spawning necromancer")
 	var scene = preload("res://Scenes/AIChar.tscn")
-	var x = 0
-	var y = 0
+	var x = -100
+	var y = 100
 	
 	var instance = scene.instantiate()
 	instance.position = Vector2(x,y)
