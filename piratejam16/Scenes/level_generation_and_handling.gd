@@ -1,6 +1,5 @@
 extends Node2D
 
-@onready var all_ai_char_instances :=[]
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -16,10 +15,9 @@ func _ready() -> void:
 	
 		
 		
-		
 func _input(event):
 	if event.is_action_pressed("necromancy"):
-		for i in all_ai_char_instances:
+		for i in Singleton.all_ai_char_instances:
 			i.necromancy()
 			if i.playercontrol:
 				Singleton.current_character = i
@@ -47,13 +45,16 @@ func _input(event):
 
 
 
-func player_attack(mouse_vec):
-	for i in all_ai_char_instances:
-		#check if in cone	
-		var enemy_pos = (i.global_position-Singleton.current_character.global_position)
-		var enemy_vec = enemy_pos.normalized()
-		if abs(acos(mouse_vec.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< Singleton.basic_character_range:
-			i.character_damage()
+func player_attack(mouse_vec,boss):
+	for i in Singleton.all_ai_char_instances:
+		if i.character_index != i.attribute_list[i.character.undead][i.attribute.character_index]:
+			#check if in cone	
+			var enemy_pos = (i.global_position-Singleton.current_character.global_position)
+			var enemy_vec = enemy_pos.normalized()
+			if abs(acos(mouse_vec.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< Singleton.basic_character_range:
+				i.character_damage()
+				
+	
 
 func spawn_ai_char(dead):
 	print("spawning")
@@ -65,11 +66,14 @@ func spawn_ai_char(dead):
 	var instance = scene.instantiate()
 	instance.position = Vector2(x_rand,y_rand)
 	add_child(instance,true)
-	all_ai_char_instances.append(instance)
-	instance.dead = dead
+	Singleton.all_ai_char_instances.append(instance)
 	instance.player_attack_woundup.connect(player_attack)
+	
+	
 	if dead:
-		instance.find_child("AnimatedSprite2D").set_animation("dead")
+		instance.load_attributes(instance.character.dead)
+	else:
+		instance.load_attributes(instance.character.alive)
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -86,7 +90,7 @@ func _process(delta: float) -> void:
 			Singleton.staff_instance = instance
 						
 		var alive_check = false
-		for i in all_ai_char_instances:
+		for i in Singleton.all_ai_char_instances:
 			if (i.global_position - Singleton.player_position).length()< Singleton.necromancy_range and i.dead and not i.fully_dead:
 				alive_check = true
 		if not alive_check:

@@ -2,6 +2,8 @@ extends Node
 
 
 
+
+
 var player_position = Vector2(-25,20)
 var current_player_hp := 0
 var current_player_strenght := 0
@@ -22,8 +24,10 @@ var game_lost := false
 
 var staff_instance = null
 
+@onready var all_ai_char_instances =[]
 
-
+var boss_hp := 10000
+var boss_defeated := false
 
 
 func player_damage(strenght):
@@ -31,4 +35,13 @@ func player_damage(strenght):
 	if current_player_hp <=0:
 		current_player_hp = 0
 		player_died = true
+	print("player hp: ",current_player_hp)
+		
+func boss_damage(strenght):
+	boss_hp -= strenght
+	if boss_hp <=0:
+		boss_hp = 0
+		boss_defeated = true
+	print("boss hp: ",boss_hp)
+
 		
