@@ -33,8 +33,6 @@ signal player_attack_woundup(aim)
 func debug_message():
 	print(dead)
 
-
-
 func necromancy():
 	if not dead and playercontrol:
 		$AnimatedSprite2D.set_animation("dead")
@@ -59,9 +57,6 @@ func necromancy():
 		Singleton.current_player_dex = current_char.dex
 		print("player now has this hp: ",Singleton.current_player_hp)
 		print("player now has this str: ",Singleton.current_player_strenght)
-				
-
-	
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -90,8 +85,6 @@ func _ready() -> void:
 
 	# Make sure to not await during _ready.
 	actor_setup.call_deferred()
-
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -123,8 +116,6 @@ func actor_setup():
 func set_movement_target(movement_target: Vector2):
 	navigation_agent.target_position = movement_target
 
-
-
 func character_damage():
 	if (global_position-Singleton.current_character.global_position).length()<Singleton.basic_character_range and not playercontrol and not dead:
 		current_char.curr_hp -= Singleton.current_player_strenght
@@ -134,8 +125,6 @@ func character_damage():
 			print("character has died")
 			current_char.curr_hp = current_char.max_hp
 			$AnimatedSprite2D.set_animation("dead")
-
-
 
 func attack():
 	attack_rdy = false
@@ -240,9 +229,6 @@ func _physics_process(delta):
 			last_animation = animation_name
 		move_and_slide()
 
-
-
-
 class AIcharacter:
 	#stats 
 	var rng = RandomNumberGenerator.new()
@@ -252,7 +238,3 @@ class AIcharacter:
 	var dex := rng.randi_range(1, 100)
 	var willpower := rng.randf_range(0, 0.2)
 	var curr_hp := max_hp
-
-
-	
-	

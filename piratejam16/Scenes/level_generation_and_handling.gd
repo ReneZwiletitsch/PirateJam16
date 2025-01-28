@@ -55,8 +55,6 @@ func player_attack(mouse_vec):
 		if abs(acos(mouse_vec.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< Singleton.basic_character_range:
 			i.character_damage()
 
-
-
 func spawn_ai_char(dead):
 	print("spawning")
 	var rng = RandomNumberGenerator.new()
