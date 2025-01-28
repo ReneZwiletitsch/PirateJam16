@@ -33,8 +33,8 @@ func _ready() -> void:
 			ai_counter += 1
 			print(ai_counter)
 			
-	#spawn_boss()		
-	Singleton.current_character=$BBEG
+	spawn_boss()		
+	#Singleton.current_character=$BBEG
 
 
 
@@ -51,13 +51,10 @@ func spawn_boss():
 	instance.position = Vector2(x,y)
 	add_child(instance,true)
 	Singleton.current_character=instance
-	instance.dead = dead
-	instance.fully_dead = fully_dead
-	instance.find_child("AnimatedSprite2D").set_animation("deadge")
+	instance.load_attributes(instance.character.boss)
 
 
 
-#temp, delete for full implementation
 func spawn_ai_char(dead,fully_dead):
 	print("spawning")
 	var rng = RandomNumberGenerator.new()
@@ -69,15 +66,23 @@ func spawn_ai_char(dead,fully_dead):
 	instance.position = Vector2(x_rand,y_rand)
 	add_child(instance,true)
 	Singleton.all_ai_char_instances.append(instance)
-	instance.dead = dead
-	instance.fully_dead = fully_dead
-
+	
 	if dead:
-		instance.find_child("AnimatedSprite2D").set_animation("dead")
-		
-	if fully_dead:
-		instance.find_child("AnimatedSprite2D").set_animation("deadge")
+		instance.load_attributes(instance.character.dead)
+	else:
+		instance.load_attributes(instance.character.alive)
 
+
+#used by boss
+func player_attack(mouse_vec,boss):
+	for i in Singleton.all_ai_char_instances:
+		#check if in cone	
+		var enemy_pos = (i.global_position-Singleton.current_character.global_position)
+		var enemy_vec = enemy_pos.normalized()
+		if abs(acos(mouse_vec.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< Singleton.basic_character_range:
+			i.character_damage()
+			
+	
 
 
 

@@ -2,6 +2,8 @@ extends Node
 
 
 
+
+
 var player_position = Vector2(-25,20)
 var current_player_hp := 0
 var current_player_strenght := 0

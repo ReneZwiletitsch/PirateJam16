@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://dm77ptpohrroj"]
+[gd_scene load_steps=31 format=3 uid="uid://dm77ptpohrroj"]
 
 [ext_resource type="Texture2D" uid="uid://dwmotiryhyoci" path="res://assets/sprites/characters/fully_dead.png" id="2_62yb5"]
 [ext_resource type="Script" path="res://scripts/ai_char.gd" id="2_moamb"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://c3feec1ugw6on" path="res://assets/sprites/characters/Basic_alive.png" id="4_i6bii"]
 [ext_resource type="Texture2D" uid="uid://bbxth5j8bu0me" path="res://assets/sprites/characters/Basic_undead.png" id="4_r1r8o"]
 [ext_resource type="Texture2D" uid="uid://b5r3umso2ul3v" path="res://assets/sprites/characters/Basic_alive-Sheet.png" id="4_yp5so"]
+[ext_resource type="Texture2D" uid="uid://c6cle63voqr51" path="res://assets/sprites/characters/boss.png" id="5_wl4re"]
 [ext_resource type="Texture2D" uid="uid://ds1i7gbxe4fvg" path="res://assets/sprites/characters/Basic_undead_mirrored-Sheet.png" id="6_g1b3n"]
 [ext_resource type="Texture2D" uid="uid://hrmu7j50hwl6" path="res://assets/sprites/characters/Basic_undead-Sheet.png" id="6_k55w1"]
 
@@ -136,10 +137,26 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("5_wl4re")
+}],
+"loop": true,
+"name": &"boss_idle_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_wl4re")
+}],
+"loop": true,
+"name": &"boss_idle_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": ExtResource("2_sg3p5")
 }],
 "loop": true,
-"name": &"dead",
+"name": &"dead_idle_right",
 "speed": 5.0
 }, {
 "frames": [{
@@ -147,7 +164,7 @@ animations = [{
 "texture": ExtResource("2_62yb5")
 }],
 "loop": true,
-"name": &"deadge",
+"name": &"deadge_idle_right",
 "speed": 5.0
 }, {
 "frames": [{
@@ -210,7 +227,7 @@ script = ExtResource("2_moamb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_h1yg5")
-animation = &"undead_idle_left"
+animation = &"dead_idle_right"
 autoplay = "alive_walking_right"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

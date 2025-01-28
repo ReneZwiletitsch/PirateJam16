@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://c4w40gxr4icn0"]
+[gd_scene load_steps=4 format=3 uid="uid://c4w40gxr4icn0"]
 
 [ext_resource type="Script" path="res://scripts/boss_fight.gd" id="1_saalm"]
 [ext_resource type="Texture2D" uid="uid://csy4rkfkqmnsc" path="res://assets/sprites/temporary/black100x100.png" id="2_0ioc6"]
-[ext_resource type="PackedScene" uid="uid://dm77ptpohrroj" path="res://Scenes/AIChar.tscn" id="3_6k5b1"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_vcf0u"]
 vertices = PackedVector2Array(1540.83, -1137.21, 1987.67, 985, -1321.56, 985, -1227.43, -1212.73)
@@ -21,6 +20,3 @@ zoom = Vector2(3.765, 3.765)
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 position = Vector2(16, -12)
 navigation_polygon = SubResource("NavigationPolygon_vcf0u")
-
-[node name="BBEG" parent="." instance=ExtResource("3_6k5b1")]
-position = Vector2(-1, -83)
