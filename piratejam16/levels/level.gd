@@ -1,6 +1,4 @@
-extends TileMapLayer
-
-class_name ProceduralLevel
+extends Node2D
 
 const room_size: Vector2i = Vector2i(18, 10);
 
@@ -16,9 +14,9 @@ const atlas_wall_r = Vector2i(7, 1);
 
 const atlas_floor = Vector2i(1, 1);
 
-var level_rooms: Array[TiledRoom];
+var num_rooms: int = 5;
 
-var num_rooms: int = 10;
+@onready var rooms :=[]
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -30,20 +28,17 @@ func _process(_delta: float) -> void:
 	pass
 
 func generate_rooms():
-	var rooms: Array[TiledRoom] = []
 	var room_graph = generate_room_graph();
 	for tile in room_graph.graph.keys():
 		var doors = room_graph.graph[tile];
 		rooms.append(tiled_room_from_graph(tile, doors));
-	level_rooms = rooms
+	print("Generated ", len(rooms), " rooms")
 
 func generate_room_graph() -> RoomGraph:
 	var room_graph: RoomGraph = RoomGraph.new();
 	room_graph.add_node(Vector2i(0, 0)); # base room
 	while len(room_graph.graph) < num_rooms:
 		var rooms_len = len(room_graph.graph)
-		print("Rooms left:", num_rooms - rooms_len);
-		print("Rooms generated:", rooms_len)
 		var rand_room = room_graph.graph.keys();
 		# Get target room
 		var seed_room = rand_room[randi_range(0, rooms_len-1)]
@@ -64,46 +59,12 @@ func generate_room_graph() -> RoomGraph:
 			continue
 		room_graph.add_node(new_room)
 	room_graph.gen_connectivity_map();
+	print("Room graph generated...")
 	return room_graph
-	
-func is_in_room(room: TiledRoom, point: Vector2i) -> bool:
-	return room.bounds.has_point(point)
 
 func draw_rooms():
-	for room in level_rooms:
-		draw_room(room)
-
-func draw_room(room: TiledRoom):
-
-	# base floor
-	for x in range(room.bounds.position.x, room.bounds.end.x + 1):
-		for y in range(room.bounds.position.y, room.bounds.end.y + 1):
-			var pos = Vector2i(x, y)
-			if x == room.bounds.position.x:
-				set_cell(pos, 2, atlas_wall_l)
-			elif x == room.bounds.end.x:
-				set_cell(pos, 2, atlas_wall_r)
-			elif y == room.bounds.position.y:
-				set_cell(pos, 2, atlas_wall_t)
-			elif y == room.bounds.end.y:
-				set_cell(pos, 2, atlas_wall_b)
-			else:
-				set_cell(pos, 2, atlas_floor)
-	
-	# Corners
-	var top_l = room.bounds.position
-	var top_r = Vector2i(room.bounds.end.x, room.bounds.position.y)
-	var bot_r = room.bounds.end
-	var bot_l = Vector2i(room.bounds.position.x, room.bounds.end.y)
-	
-	set_cell(top_l, 2, atlas_wall_tl)
-	set_cell(top_r, 2, atlas_wall_tr)
-	set_cell(bot_r, 2, atlas_wall_br)
-	set_cell(bot_l, 2, atlas_wall_bl)
-	
-	# Doors
-	for door in room.doors:
-		set_cell(door, 2, atlas_floor)
+	for room in rooms:
+		room.draw()
 
 func validate_rooms():
 	# Ensure any room with a door has a partner room with a door on the other side.
@@ -138,30 +99,12 @@ func tiled_room_from_graph(grid_pos: Vector2i, doors: Array[TransitionDir]):
 			TransitionDir.Left:
 				var pos = start + Vector2i(0, bounds.size.y/2)
 				doors_pos.append(pos);
-	var room = TiledRoom.new(bounds)
-	room.doors = doors_pos
-	return room
-
-class TiledRoom:
-	var bounds: Rect2i
-	var doors: Array[Vector2i]
-	
-	# @position - The x,y coordinate of the top right corner of the room.
-	# @size - the size of the room, beginning from the top right corer, in x,y terms
-	func _init(rect: Rect2i):
-		bounds = rect
-	
-	func is_corner(point: Vector2i) -> bool:
-		return corners().any(func(x, y): return(x == y))
-		
-	func corners() -> Array:
-		return [
-			Vector2i(bounds.position.x, bounds.position.y), 
-			Vector2i(bounds.end.x, bounds.position.y), 
-			Vector2i(bounds.end.x, bounds.end.y), 
-			Vector2i(bounds.position.x, bounds.end.y)
-			]
-		
+	var room_scene = preload("res://levels/room.tscn");
+	var inst = room_scene.instantiate();
+	inst.bounds = bounds
+	inst.doors = doors_pos
+	add_child(inst, true)
+	return inst
 
 # Data type for a undirected graph of rooms in a grid, where each room is a 1x1 item in a grid.
 class RoomGraph:

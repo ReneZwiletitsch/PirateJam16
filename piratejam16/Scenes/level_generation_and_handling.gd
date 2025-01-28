@@ -22,7 +22,7 @@ func _input(event):
 		for i in all_ai_char_instances:
 			i.necromancy()
 			if i.playercontrol:
-				Singleton.current_character = i
+				Singleton.currenx_randt_character = i
 
 	#player attacking
 	elif event.is_action_pressed("attack"):
@@ -53,8 +53,6 @@ func player_attack(mouse_vec):
 		if abs(acos(mouse_vec.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< Singleton.basic_character_range:
 			i.character_damage()
 
-
-
 func spawn_ai_char(dead):
 	print("spawning")
 	var rng = RandomNumberGenerator.new()
@@ -69,12 +67,6 @@ func spawn_ai_char(dead):
 	instance.dead = dead
 	for i in all_ai_char_instances:
 		i.player_attack_woundup.connect(player_attack)
-	
-	
-	
-
-
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

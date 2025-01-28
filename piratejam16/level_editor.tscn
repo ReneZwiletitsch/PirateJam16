@@ -1,7 +1,42 @@
-[gd_scene load_steps=3 format=3 uid="uid://bfbuo0slj1bw6"]
+[gd_scene load_steps=3 format=3 uid="uid://hahr4i0jp1ya"]
 
 [ext_resource type="PackedScene" uid="uid://bqvoixwaff742" path="res://Scenes/player.tscn" id="1_pq5p0"]
-[ext_resource type="Script" path="res://scripts/level_editor/camera.gd" id="2_7tks6"]
+
+[sub_resource type="GDScript" id="GDScript_epv8j"]
+script/source = "extends Camera2D
+
+class_name LevelEditorCam
+
+var ZoomMin = Vector2(0.25,0.25)
+var ZoomMax = Vector2(5.,5.)
+var ZoomSpd = Vector2(0.3,0.3)
+var PanSpeedKey = 4
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+func _input(event):
+	if event.is_action_pressed(\"ScrollZoomOut\"):
+		if zoom > ZoomMin:
+			zoom -= ZoomSpd
+	if event.is_action_pressed(\"ScrollZoomIn\"):
+		if zoom < ZoomMax:
+			zoom +=ZoomSpd
+	pass
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(_delta):
+	if Input.is_action_pressed(\"up\"):
+		position.y -= PanSpeedKey
+	if Input.is_action_pressed(\"down\"):
+		position.y += PanSpeedKey
+	if Input.is_action_pressed(\"left\"):
+		position.x -= PanSpeedKey
+	if Input.is_action_pressed(\"right\"):
+		position.x += PanSpeedKey
+	pass
+"
 
 [node name="LevelEditor" type="Node2D"]
 
@@ -11,4 +46,4 @@ script = null
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(3.765, 3.765)
 position_smoothing_enabled = true
-script = ExtResource("2_7tks6")
+script = SubResource("GDScript_epv8j")
