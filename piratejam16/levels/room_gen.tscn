@@ -1,4 +1,35 @@
-extends Node2D
+[gd_scene load_steps=5 format=3 uid="uid://cposs2l1shuh4"]
+
+[ext_resource type="Texture2D" uid="uid://b6cup8j5libu0" path="res://assets/tiles/tiles_dungeon_2.png" id="1_hqrbv"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bvftb"]
+texture = ExtResource("1_hqrbv")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+7:0/0 = 0
+7:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+0:1/0 = 0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+0:7/0 = 0
+0:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:7/0 = 0
+1:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+7:7/0 = 0
+7:7/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+7:1/0 = 0
+7:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+1:0/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_qlj0l"]
+physics_layer_0/collision_layer = 1
+navigation_layer_0/layers = 1
+sources/2 = SubResource("TileSetAtlasSource_bvftb")
+
+[sub_resource type="GDScript" id="GDScript_5awoh"]
+script/source = "extends Node2D
+
+class_name ProceduralLevel
 
 const room_size: Vector2i = Vector2i(18, 10);
 
@@ -14,96 +45,26 @@ const atlas_wall_r = Vector2i(7, 1);
 
 const atlas_floor = Vector2i(1, 1);
 
-var num_rooms: int = 5;
+var level_rooms: Array[Room];
 
-@onready var rooms :=[]
-
-var num_enemies: int = 1;
-var num_dead_bodies: int = 2;
-
-
-
-
+var num_rooms: int = 10;
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	generate_rooms()
 	draw_rooms()
-	for i in Singleton.all_ai_char_instances:
-		i.player_attack_woundup.connect(player_attack)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	if Singleton.current_character == null:
-		if not Singleton.staff_instance:
-			#spawn staff
-			var scene = preload("res://Scenes/staff.tscn")
-			var instance = scene.instantiate()
-			instance.rotate(PI/2)
-			instance.set_scale(Vector2(0.7,0.7))
-			instance.position = Singleton.player_position
-			add_child(instance,true)
-			Singleton.staff_instance = instance
-						
-		var alive_check = false
-		for i in Singleton.all_ai_char_instances:
-			if (i.global_position - Singleton.player_position).length()< Singleton.necromancy_range and i.dead and not i.fully_dead:
-				alive_check = true
-		if not alive_check:
-			Singleton.game_lost = true
-			print("YOU DIED")
-				
-
-func _input(event):
-	if event.is_action_pressed("necromancy"):
-		for i in Singleton.all_ai_char_instances:
-			i.necromancy()
-			if i.playercontrol:
-				Singleton.current_character = i
-				#despawn the staff
-				remove_child(Singleton.staff_instance)
-				Singleton.staff_instance = null
-				
-
-	#player attacking
-	elif event.is_action_pressed("attack"):
-		if Singleton.current_character != null:
-			#print(Singleton.current_character.get_local_mouse_position().angle())
-
-			if Singleton.current_character.attack_rdy:
-				Singleton.current_character.attack() #starts cooldown
-				
-			else: 
-				print("on cooldown",Singleton.max_attack_cooldown/Singleton.current_player_dex)
-		else:
-			print("no character")
-			
-
-
-
-
-func player_attack(mouse_vec,boss):
-	for i in Singleton.all_ai_char_instances:
-		if i.character_index != i.attribute_list[i.character.undead][i.attribute.character_index]:
-			#check if in cone	
-			var enemy_pos = (i.global_position-Singleton.current_character.global_position)
-			var enemy_vec = enemy_pos.normalized()
-			if abs(acos(mouse_vec.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< Singleton.basic_character_range:
-				i.character_damage()
-				
-
-
-
-
-
-
+	pass
 
 func generate_rooms():
+	var rooms: Array[Room] = []
 	var room_graph = generate_room_graph();
 	for tile in room_graph.graph.keys():
 		var doors = room_graph.graph[tile];
 		rooms.append(tiled_room_from_graph(tile, doors));
-	print("Generated ", len(rooms), " rooms")
+	level_rooms = rooms
 
 func generate_room_graph() -> RoomGraph:
 	var room_graph: RoomGraph = RoomGraph.new();
@@ -130,11 +91,10 @@ func generate_room_graph() -> RoomGraph:
 			continue
 		room_graph.add_node(new_room)
 	room_graph.gen_connectivity_map();
-	print("Room graph generated...")
 	return room_graph
 
 func draw_rooms():
-	for room in rooms:
+	for room in level_rooms:
 		room.draw()
 
 func validate_rooms():
@@ -170,28 +130,8 @@ func tiled_room_from_graph(grid_pos: Vector2i, doors: Array[TransitionDir]):
 			TransitionDir.Left:
 				var pos = start + Vector2i(0, bounds.size.y/2)
 				doors_pos.append(pos);
-	var room_scene = preload("res://levels/room.tscn");
-	var inst = room_scene.instantiate();
-	inst.bounds = bounds
-	inst.doors = doors_pos
-	add_child(inst, true)
-	
-	
-	for i in range(num_enemies):
-		inst.spawn_enemy(false)
-	for i in range(num_dead_bodies):
-		inst.spawn_enemy(true)
-	
-	return inst
-
-
-
-
-
-
-
-
-
+	var room = Room.new(bounds, doors_pos)
+	return room
 
 # Data type for a undirected graph of rooms in a grid, where each room is a 1x1 item in a grid.
 class RoomGraph:
@@ -217,7 +157,7 @@ class RoomGraph:
 	func get_neighbor_dir(query: Vector2i, neighbor: Vector2i):
 		var diff = query - neighbor;
 		if diff.x != 0 && diff.y !=0:
-			print("At least one neighbor value should be zero. What happened?")
+			print(\"At least one neighbor value should be zero. What happened?\")
 		var dir: TransitionDir;
 				
 		if diff.x > 0:
@@ -240,3 +180,12 @@ class RoomGraph:
 			
 	func iter():
 		return 
+"
+
+[node name="RoomGen" type="Node2D"]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+scale = Vector2(4, 4)
+tile_map_data = PackedByteArray(0, 0, 7, 0, 1, 0, 2, 0, 7, 0, 0, 0, 0, 0, 7, 0, 2, 0, 2, 0, 7, 0, 7, 0, 0, 0, 6, 0, 2, 0, 2, 0, 0, 0, 7, 0, 0, 0, 6, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0)
+tile_set = SubResource("TileSet_qlj0l")
+script = SubResource("GDScript_5awoh")

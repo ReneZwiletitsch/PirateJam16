@@ -28,6 +28,7 @@ func _input(event):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
+	return #here to keep the camera fixed for now
 	if Input.is_action_pressed(\"up\"):
 		position.y -= PanSpeedKey
 	if Input.is_action_pressed(\"down\"):
@@ -45,6 +46,7 @@ func _process(_delta):
 script = ExtResource("1_mpa87")
 
 [node name="Player" parent="." instance=ExtResource("2_ny7hd")]
+visible = false
 position = Vector2(-23, -12)
 
 [node name="Camera2D" type="Camera2D" parent="."]

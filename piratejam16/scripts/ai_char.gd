@@ -88,7 +88,7 @@ func _ready() -> void:
 	target_polygon.visible = false
 	add_child(target_polygon)
 	
-	$CollisionShape2D.disabled = true
+	#$CollisionShape2D.disabled = true
 	
 	movement_speed = current_char.speed
 	

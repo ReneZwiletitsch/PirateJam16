@@ -417,7 +417,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gebq4"]
-radius = 7.07107
+radius = 0.0
 
 [node name="AIChar" type="CharacterBody2D"]
 z_index = 1

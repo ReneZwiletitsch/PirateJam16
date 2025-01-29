@@ -45,6 +45,7 @@ func _input(event):
 
 
 
+
 func player_attack(mouse_vec,boss):
 	for i in Singleton.all_ai_char_instances:
 		if i.character_index != i.attribute_list[i.character.undead][i.attribute.character_index]:
@@ -68,7 +69,6 @@ func spawn_ai_char(dead):
 	add_child(instance,true)
 	Singleton.all_ai_char_instances.append(instance)
 	instance.player_attack_woundup.connect(player_attack)
-	
 	
 	if dead:
 		instance.load_attributes(instance.character.dead)

@@ -15,10 +15,7 @@ const atlas_floor = Vector2i(1, 1);
 var bounds: Rect2i
 var doors: Array[Vector2i]
 
-var num_enemies: int = 2;
 var enemy = preload("res://Scenes/AIChar.tscn")
-
-@onready var enemies :=[]
 
 # @position - The x,y coordinate of the top right corner of the room.
 # @size - the size of the room, beginning from the top right corer, in x,y terms
@@ -76,8 +73,7 @@ func draw():
 	for door in doors:
 		set_cell(door, 2, atlas_floor)
 	
-	for i in range(num_enemies):
-		spawn_enemy(false)
+
 
 func spawn_enemy(dead):
 	print("spawning")
@@ -91,16 +87,18 @@ func spawn_enemy(dead):
 	var instance = enemy.instantiate()
 	instance.position = Vector2(x_rand,y_rand) * 16;
 	add_child(instance,true)
-	enemies.append(instance)
-	instance.dead = dead
+	Singleton.all_ai_char_instances.append(instance)
+
+	if dead:
+		instance.load_attributes(instance.character.dead)
+	else:
+		instance.load_attributes(instance.character.alive)
 	
-# Designed to be called on node teardown, appends a list of valid summonable enemies
-# for the boss battle
-#func later_summonable_enemies():
-#	for enemy in enemies:
-#		if enemy.dead && !enemy.is_fully_dead:
-#			singleton.boss_summon_enemies.append(enemy.current_char)
-#	pass
+	
+	
+	
+	
+	
 
 # func stop_enemies():
 # 	for enemies in enemy:
