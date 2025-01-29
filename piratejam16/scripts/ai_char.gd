@@ -13,7 +13,6 @@ var movement_target_position: Vector2 = Vector2(0.0,0.0)
 @onready var dead = true
 @onready var fully_dead := false
 
-
 @onready var attack_rdy := true
 @onready var aim
 @onready var target_polygon = Polygon2D.new()

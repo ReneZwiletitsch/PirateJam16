@@ -22,13 +22,11 @@ var game_lost := false
 
 var staff_instance = null
 
-
-
-
+# Enemies that are valid for summoning by the player in the final boss battle
+var boss_summon_list = []
 
 func player_damage(strenght):
 	current_player_hp -= strenght
 	if current_player_hp <=0:
 		current_player_hp = 0
 		player_died = true
-		
