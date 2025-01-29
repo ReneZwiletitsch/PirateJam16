@@ -15,7 +15,6 @@ var movement_target_position: Vector2 = Vector2(0.0,0.0)
 @onready var character_index :=0
 @onready var attack_range := Singleton.basic_character_range
 
-
 @onready var attack_rdy := true
 @onready var aim
 @onready var target_polygon = Polygon2D.new()
