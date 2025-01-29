@@ -45,7 +45,9 @@ func _process(_delta):
 position = Vector2(-160, -96)
 
 [node name="Player" parent="." instance=ExtResource("2_ny7hd")]
+position = Vector2(-23, -12)
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(-24, -8)
 zoom = Vector2(3.765, 3.765)
 script = SubResource("GDScript_epv8j")

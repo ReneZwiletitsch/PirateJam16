@@ -1,6 +1,9 @@
 extends Node
 
-
+const how_to_play: Array[String] = [
+	"WASD to move",
+	"Hover over a corpse and press C to resurrect!"
+]
 
 
 
