@@ -72,7 +72,7 @@ func _ready() -> void:
 		if i.dead and not i.fully_dead:
 			i.boss_fight = true
 			i.necromancy()
-			i.position = Vector2 (ai_counter%5*30,ai_counter/5 *30)
+			i.position = Vector2 (ai_counter%5*30,ai_counter/5 *30) +Vector2(-20,0)
 			ai_counter += 1
 			print(ai_counter)
 
