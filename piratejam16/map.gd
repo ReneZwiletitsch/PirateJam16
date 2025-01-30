@@ -2,7 +2,7 @@ extends Node2D
 
 @onready var level;
 
-var max_floors: int = 5;
+var max_floors: int = 4;
 var current_floor: int = 0;
 
 var start_room = preload("res://levels/room_start.tscn");
@@ -44,6 +44,8 @@ func next_floor():
 		current_floor += 1;
 	if current_floor == max_floors:
 		level.queue_free()
+		Singleton.current_character = null
+		$"../Camera2D".queue_free()
 		var inst = boss_room.instantiate()
 		add_child(inst, true)
 		level = inst
