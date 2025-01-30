@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bbxth5j8bu0me"
-path="res://.godot/imported/Basic_undead.png-616aa4c77e68839d491d97005919521d.ctex"
+uid="uid://bgys80uw3b7en"
+path="res://.godot/imported/alive_walk_left.png-09d80c1caeedb8f628289abd1656dde9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/characters/Basic_undead.png"
-dest_files=["res://.godot/imported/Basic_undead.png-616aa4c77e68839d491d97005919521d.ctex"]
+source_file="res://assets/sprites/characters/alive_walk_left.png"
+dest_files=["res://.godot/imported/alive_walk_left.png-09d80c1caeedb8f628289abd1656dde9.ctex"]
 
 [params]
 

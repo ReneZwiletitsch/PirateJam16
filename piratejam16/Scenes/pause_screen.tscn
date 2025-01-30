@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxgm87umvkg2a"]
+
+[ext_resource type="Texture2D" path="res://assets/screens/pause.png" id="1_ne6pb"]
+
+[node name="Pause Screen" type="Sprite2D"]
+texture = ExtResource("1_ne6pb")
+
+[node name="Camera2D" type="Camera2D" parent="."]
