@@ -1,22 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://6bljgjkmv2ac"]
+[gd_scene load_steps=3 format=3 uid="uid://ls3ujx0piiw0"]
 
 [ext_resource type="Script" path="res://scripts/boss_fight.gd" id="1_saalm"]
-[ext_resource type="Texture2D" uid="uid://csy4rkfkqmnsc" path="res://assets/sprites/temporary/black100x100.png" id="2_0ioc6"]
-
-[sub_resource type="NavigationPolygon" id="NavigationPolygon_vcf0u"]
-vertices = PackedVector2Array(1540.83, -1137.21, 1987.67, 985, -1321.56, 985, -1227.43, -1212.73)
-polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-1237, -1223, 1549, -1147, 2000, 995, -1332, 995)])
+[ext_resource type="PackedScene" uid="uid://dnvv7tug7xcp8" path="res://levels/room_boss.tscn" id="3_fkfjc"]
 
 [node name="BossFight" type="Node2D"]
 script = ExtResource("1_saalm")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_0ioc6")
-
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(3.765, 3.765)
 
-[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
-position = Vector2(16, -12)
-navigation_polygon = SubResource("NavigationPolygon_vcf0u")
+[node name="BossRoom" parent="." instance=ExtResource("3_fkfjc")]
+position = Vector2(-209.005, -136)
+scale = Vector2(1.535, 1.535)

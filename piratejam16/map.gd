@@ -6,7 +6,7 @@ var max_floors: int = 5;
 var current_floor: int = 0;
 
 var start_room = preload("res://levels/room_start.tscn");
-var boss_room = preload("res://levels/room_boss.tscn");
+var boss_room = preload("res://Scenes/BossFight.tscn");
 var level_scene = preload("res://levels/level.tscn");
 
 # Called when the node enters the scene tree for the first time.
