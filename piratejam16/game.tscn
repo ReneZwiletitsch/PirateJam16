@@ -1,7 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://do5rj2k3k24xt"]
+[gd_scene load_steps=6 format=3 uid="uid://do5rj2k3k24xt"]
 
 [ext_resource type="Script" path="res://map.gd" id="1_mpa87"]
+[ext_resource type="Script" path="res://levels/stairs.gd" id="2_beivp"]
 [ext_resource type="PackedScene" uid="uid://cl0f7pp1rg8h1" path="res://player.tscn" id="2_ny7hd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mi883"]
 
 [sub_resource type="GDScript" id="GDScript_epv8j"]
 script/source = "extends Camera2D
@@ -43,13 +46,20 @@ func _process(_delta):
 [node name="Game" type="Node2D"]
 
 [node name="Map" type="Node2D" parent="."]
+position = Vector2(-153, -86)
 script = ExtResource("1_mpa87")
+
+[node name="Stairs" type="Area2D" parent="Map"]
+position = Vector2(153, 31)
+script = ExtResource("2_beivp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Stairs"]
+shape = SubResource("RectangleShape2D_mi883")
 
 [node name="Player" parent="." instance=ExtResource("2_ny7hd")]
 visible = false
 position = Vector2(144, 80)
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-24, -8)
 zoom = Vector2(3.765, 3.765)
 script = SubResource("GDScript_epv8j")

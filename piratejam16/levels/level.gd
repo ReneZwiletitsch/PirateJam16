@@ -22,10 +22,6 @@ var num_enemies: int = 2;
 var num_dead_bodies: int = 0;
 var frames_since_targeting :=1
 
-
-
-
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	generate_rooms()
@@ -49,14 +45,11 @@ func _process(_delta: float) -> void:
 						
 		var alive_check = false
 		for i in Singleton.all_ai_char_instances:
-			if (i.global_position - Singleton.player_position).length()< Singleton.necromancy_range and i.dead and not i.fully_dead:
+			if (i.global_position - Singleton.player_position).length() < Singleton.necromancy_range and i.dead and not i.fully_dead:
 				alive_check = true
 		if not alive_check:
 			Singleton.game_lost = true
 			print("YOU DIED")
-				
-				
-
 
 func _physics_process(delta):
 	if Singleton.current_character and frames_since_targeting %60 ==0:
@@ -76,8 +69,6 @@ func _physics_process(delta):
 	else:
 		frames_since_targeting +=1
 		
-
-
 
 func _input(event):
 	if event.is_action_pressed("necromancy"):
@@ -104,9 +95,6 @@ func _input(event):
 			print("no character")
 			
 
-
-
-
 func player_attack(mouse_vec,boss):
 	for i in Singleton.all_ai_char_instances:
 		if i.character_index != i.attribute_list[i.character.undead][i.attribute.character_index]:
@@ -116,12 +104,6 @@ func player_attack(mouse_vec,boss):
 			if abs(acos(mouse_vec.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< Singleton.basic_character_range:
 				i.character_damage()
 				
-
-
-
-
-
-
 
 func generate_rooms():
 	var room_graph = generate_room_graph();
@@ -161,13 +143,6 @@ func generate_room_graph() -> RoomGraph:
 func draw_rooms():
 	for room in rooms:
 		room.draw()
-
-func validate_rooms():
-	# Ensure any room with a door has a partner room with a door on the other side.
-	pass
-
-func build_doors():
-	pass
 
 enum TransitionDir {
 	Up = 1,
@@ -226,11 +201,6 @@ func tiled_room_from_graph(grid_pos: Vector2i, doors: Array[TransitionDir]):
 			inst.spawn_enemy(true)
 		
 	return inst
-
-
-
-
-
 
 
 
