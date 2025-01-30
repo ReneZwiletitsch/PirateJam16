@@ -47,7 +47,7 @@ script = ExtResource("1_mpa87")
 
 [node name="Player" parent="." instance=ExtResource("2_ny7hd")]
 visible = false
-position = Vector2(-23, -12)
+position = Vector2(144, 80)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-24, -8)

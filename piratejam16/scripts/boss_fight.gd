@@ -20,15 +20,15 @@ func _input(event):
 
 
 
-
-
-
-
-
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	#camera zooms into necromancer
+	var x = -100
+	var y = 100
+	$Camera2D.set_position(Vector2(x,y))
+	$Camera2D.zoom = Vector2(5,5)
 	
+	Singleton.aggro_range = 9999999
 	#temp, just for debugging
 	Singleton.chars_for_boss_fight = [[2, 81, 98, 0.14359773695469, 76], [5, 66, 75, 0.10738767683506, 10], [3, 64, 2, 0.12045760452747, 35], [2, 56, 71, 0.0115536917001, 59], [1, 91, 83, 0.07365279644728, 45], [7, 86, 35, 0.07376900315285, 93], [5, 61, 2, 0.11817486584187, 54], [10, 67, 13, 0.02707774750888, 72], [7, 95, 88, 0.09477481991053, 35], [8, 76, 7, 0.07149560004473, 26]]
 
@@ -46,21 +46,25 @@ func _ready() -> void:
 	spawn_boss()		
 	#zoomed in at necromancer dead
 	spawn_necromancer()
-	await get_tree().create_timer(3).timeout 
-
-
-	
-	
-	#necromancer stands up
+	await get_tree().create_timer(2).timeout 
 	necromancer_instance.dead = false
+	#necromancer stands up
+	print("TEMP necromancer revived")
 	
+	await get_tree().create_timer(2).timeout 
 	
 	#zoom out, bbeg becomes visible
+	var start_zoom = 5
+	var end_zoom = 3.765
+	for i in range(300):
+		await get_tree().create_timer(0.01).timeout 
+		$Camera2D.set_position(Vector2(x-i*x/300,y-i*y/300))
+		$Camera2D.zoom = Vector2(start_zoom+ (end_zoom-start_zoom)*i/300.0,start_zoom+ (end_zoom-start_zoom)*i/300.0)
 	
-	#necromancer summons characters and fight starts
-		
-		
-		
+	
+	
+	await get_tree().create_timer(2).timeout 
+	print("TEMP necromancer summons characters")
 		
 	var ai_counter :=0
 	Singleton.player_position = Vector2(0,300)
@@ -72,6 +76,11 @@ func _ready() -> void:
 			ai_counter += 1
 			print(ai_counter)
 
+	await get_tree().create_timer(2).timeout 
+	print("fight starts")
+	Singleton.current_character=boss_instance
+
+
 
 
 func spawn_boss():
@@ -79,7 +88,6 @@ func spawn_boss():
 	var scene = preload("res://Scenes/AIChar.tscn")
 	var x = 0
 	var y = -100
-	
 	var instance = scene.instantiate()
 	instance.position = Vector2(x,y)
 	add_child(instance,true)
@@ -88,7 +96,6 @@ func spawn_boss():
 	instance.current_char.dex = 10
 	instance.player_attack_woundup.connect(player_attack)
 	boss_instance = instance
-	Singleton.current_character=instance
 	Singleton.current_player_strenght = instance.current_char.strenght
 
 
@@ -112,13 +119,9 @@ func spawn_necromancer():
 
 func spawn_ai_char(dead,fully_dead):
 	print("spawning")
-	var rng = RandomNumberGenerator.new()
 	var scene = preload("res://Scenes/AIChar.tscn")
-	var x_rand = rng.randf_range(-100, 100)
-	var y_rand = rng.randf_range(-100, 100)
-	
 	var instance = scene.instantiate()
-	instance.position = Vector2(x_rand,y_rand)
+	instance.position = Vector2(1000,1000)
 	add_child(instance,true)
 	all_ai_char_instances.append(instance)
 	
@@ -163,7 +166,9 @@ func player_attack(mouse_vec,boss):
 
 
 func second_phase():
-	print("all ai dead, starting second phase")
+	print("TEMP all ai dead, starting second phase")
+	await get_tree().create_timer(2).timeout
+	Singleton.current_character=boss_instance
 	necromancer_instance.playercontrol = true
 	necromancer_instance.current_char.willpower = 0
 	Singleton.current_player_hp = necromancer_instance.current_char.max_hp

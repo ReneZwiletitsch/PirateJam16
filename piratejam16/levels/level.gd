@@ -20,6 +20,7 @@ var num_rooms: int = 5;
 
 var num_enemies: int = 2;
 var num_dead_bodies: int = 0;
+var frames_since_targeting :=1
 
 
 
@@ -41,7 +42,8 @@ func _process(_delta: float) -> void:
 			var instance = scene.instantiate()
 			instance.rotate(PI/2)
 			instance.set_scale(Vector2(0.7,0.7))
-			instance.position = Singleton.player_position
+			instance.position = Singleton.player_position + Vector2(-10,-30)
+			print(Singleton.player_position)
 			add_child(instance,true)
 			Singleton.staff_instance = instance
 						
@@ -53,6 +55,29 @@ func _process(_delta: float) -> void:
 			Singleton.game_lost = true
 			print("YOU DIED")
 				
+				
+
+
+func _physics_process(delta):
+	if Singleton.current_character and frames_since_targeting %60 ==0:
+		var shortest_distance=9999
+		var closest_enemy = null
+		for i in Singleton.all_ai_char_instances:
+			if not i.playercontrol and not i.dead:
+				if (i.global_position-Singleton.current_character.global_position).length() < shortest_distance:
+					shortest_distance = (i.global_position-Singleton.current_character.global_position).length()
+					closest_enemy = i
+		if closest_enemy:
+			print("###################")
+			print(closest_enemy.global_position)
+			print((closest_enemy.global_position-Singleton.current_character.global_position).length())
+			Singleton.current_character.movement_target_position  = closest_enemy.global_position
+		frames_since_targeting = 1
+	else:
+		frames_since_targeting +=1
+		
+
+
 
 func _input(event):
 	if event.is_action_pressed("necromancy"):
@@ -185,13 +210,12 @@ func tiled_room_from_graph(grid_pos: Vector2i, doors: Array[TransitionDir]):
 		Singleton.current_character.current_char.dex = Singleton.curr_char_stats[2]
 		Singleton.current_character.current_char.willpower = Singleton.curr_char_stats[3]
 		Singleton.current_character.current_char.curr_hp = Singleton.curr_char_stats[4]
-		Singleton.curr_char_stats = null
 	
 	#in the first room, spawn 3 dead bodies and an enemy
 	if Singleton.curr_char_stats:
 		for i in range(3):
 			inst.spawn_enemy(true)
-		Singleton.player_position = Vector2(bounds.size.x, bounds.size.y)*8
+		Singleton.player_position = Vector2(bounds.size.x, bounds.size.y)*8 + Vector2(20,40)
 		inst.spawn_enemy(false)
 		Singleton.curr_char_stats = null
 	#in the other ones, spawn as specified at the top

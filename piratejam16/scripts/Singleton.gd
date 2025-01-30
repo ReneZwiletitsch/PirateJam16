@@ -41,7 +41,7 @@ func player_damage(strenght):
 	if current_player_hp <=0:
 		current_player_hp = 0
 		player_died = true
-	print("player hp: ",current_player_hp)
+	#print("player hp: ",current_player_hp)
 	
 
 
@@ -50,4 +50,4 @@ func boss_damage(strenght):
 	if boss_hp <=0:
 		boss_hp = 0
 		boss_defeated = true
-	print("boss hp: ",boss_hp)
+	#print("boss hp: ",boss_hp)

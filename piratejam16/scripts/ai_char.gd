@@ -232,7 +232,6 @@ func _physics_process(delta):
 			
 		#temp, replace by logic where the player's body wants to go
 		else:
-			movement_target_position = Vector2(0.0,0.0)
 			set_movement_target(movement_target_position)
 			
 	
@@ -244,10 +243,10 @@ func _physics_process(delta):
 					attack()
 					
 			#if we are the player and at ai's target, stop ai input
-			elif playercontrol and current_agent_position.distance_to(Vector2(0.0,0.0))<attack_range:
+			elif playercontrol and current_agent_position.distance_to(movement_target_position)<attack_range:
 				AI_input = Vector2(0,0)
 
-		if current_agent_position.distance_to(movement_target_position)>Singleton.aggro_range:
+		if current_agent_position.distance_to(movement_target_position)>(Singleton.aggro_range + int(playercontrol)*100): #YES I AM USING A BOOLEAN AS A NUMBER. DON'T WORRY ABOUT IT
 			AI_input = Vector2(0,0)
 	else:
 		AI_input = Vector2(0,0)
