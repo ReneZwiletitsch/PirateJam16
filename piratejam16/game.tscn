@@ -46,7 +46,6 @@ func _process(_delta):
 [node name="Game" type="Node2D"]
 
 [node name="Map" type="Node2D" parent="."]
-position = Vector2(-153, -86)
 script = ExtResource("1_mpa87")
 
 [node name="Stairs" type="Area2D" parent="Map"]
