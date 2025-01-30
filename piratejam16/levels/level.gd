@@ -191,7 +191,7 @@ func tiled_room_from_graph(grid_pos: Vector2i, doors: Array[TransitionDir]):
 	if Singleton.curr_char_stats:
 		for i in range(3):
 			inst.spawn_enemy(true)
-		Singleton.player_position = inst.global_position
+		Singleton.player_position = Vector2(bounds.size.x, bounds.size.y)*8
 		inst.spawn_enemy(false)
 		Singleton.curr_char_stats = null
 	#in the other ones, spawn as specified at the top
