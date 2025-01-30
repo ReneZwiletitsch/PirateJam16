@@ -5,6 +5,7 @@ var enemy = preload("res://Scenes/AIChar.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	spawn_enemy(true)
+	spawn_enemy(true)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -16,7 +17,7 @@ func _process(delta: float) -> void:
 			var instance = scene.instantiate()
 			instance.rotate(PI/2)
 			instance.set_scale(Vector2(0.7,0.7))
-			instance.position = Singleton.player_position + Vector2(-10,-30)
+			instance.position = Singleton.player_position + Vector2(150,100) #temp to make it look right, might break something
 			print(Singleton.player_position)
 			add_child(instance,true)
 			Singleton.staff_instance = instance
@@ -64,7 +65,11 @@ func player_attack(mouse_vec,boss):
 
 func spawn_enemy(dead):
 	var instance = enemy.instantiate()
-	instance.position = Vector2(0, 0);
+	var rng = RandomNumberGenerator.new()
+	var x_rand = rng.randf_range(40, 250)
+	var y_rand = rng.randf_range(40, 120)
+	
+	instance.position = Vector2(250, 120);
 	add_child(instance,true)
 	Singleton.all_ai_char_instances.append(instance)
 

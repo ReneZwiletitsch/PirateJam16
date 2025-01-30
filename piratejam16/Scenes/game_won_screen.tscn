@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://bsdmqqw4yuk2n"]
+
+[ext_resource type="Texture2D" path="res://assets/screens/You win.png" id="1_d8588"]
+[ext_resource type="Script" path="res://scripts/game_won_screen.gd" id="2_srtk8"]
+
+[node name="Game Won Screen" type="Sprite2D"]
+texture = ExtResource("1_d8588")
+script = ExtResource("2_srtk8")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="PlayAgainButton" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="QuitButton" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[connection signal="button_down" from="PlayAgainButton" to="." method="_on_play_again_button_button_down"]
+[connection signal="button_down" from="QuitButton" to="." method="_on_quit_button_button_down"]
