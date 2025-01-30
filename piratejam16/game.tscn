@@ -49,6 +49,7 @@ func _process(_delta):
 script = ExtResource("1_mpa87")
 
 [node name="Stairs" type="Area2D" parent="Map"]
+z_index = 1
 position = Vector2(153, 31)
 script = ExtResource("2_beivp")
 
@@ -60,5 +61,6 @@ visible = false
 position = Vector2(144, 80)
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(153, 86)
 zoom = Vector2(3.765, 3.765)
 script = SubResource("GDScript_epv8j")

@@ -37,7 +37,7 @@ func new_floor():
 	var room_rand = rng.randi_range(1, floor_rooms() - 1)
 	var stair_room = level.rooms[room_rand]
 	var stair_node = get_node("Stairs")
-	stair_node.position = stair_room.bounds.get_center()
+	stair_node.position = stair_room.bounds.get_center() * 16
 
 func next_floor():
 	if current_floor < max_floors:

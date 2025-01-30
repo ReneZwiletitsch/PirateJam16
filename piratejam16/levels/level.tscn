@@ -3,5 +3,4 @@
 [ext_resource type="Script" path="res://levels/level.gd" id="1_8h6ln"]
 
 [node name="Level" type="Node2D"]
-position = Vector2(16, 32)
 script = ExtResource("1_8h6ln")
