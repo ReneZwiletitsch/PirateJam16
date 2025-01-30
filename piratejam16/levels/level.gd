@@ -2,18 +2,6 @@ extends Node2D
 
 const room_size: Vector2i = Vector2i(18, 10);
 
-const atlas_wall_tl = Vector2i(0, 0);
-const atlas_wall_tr = Vector2i(7, 0);
-const atlas_wall_br = Vector2i(7, 7);
-const atlas_wall_bl = Vector2i(0, 7);
-
-const atlas_wall_t = Vector2i(1, 0);
-const atlas_wall_b = Vector2i(1, 7);
-const atlas_wall_l = Vector2i(0, 1);
-const atlas_wall_r = Vector2i(7, 1);
-
-const atlas_floor = Vector2i(1, 1);
-
 var num_rooms: int = 5;
 
 @onready var rooms :=[]

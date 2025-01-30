@@ -1,16 +1,16 @@
 extends TileMapLayer
 
 const atlas_wall_tl = Vector2i(0, 0);
-const atlas_wall_tr = Vector2i(7, 0);
-const atlas_wall_br = Vector2i(7, 7);
-const atlas_wall_bl = Vector2i(0, 7);
+const atlas_wall_tr = Vector2i(1, 0);
+const atlas_wall_br = Vector2i(1, 1);
+const atlas_wall_bl = Vector2i(0, 1);
 
-const atlas_wall_t = Vector2i(1, 0);
-const atlas_wall_b = Vector2i(1, 7);
-const atlas_wall_l = Vector2i(0, 1);
-const atlas_wall_r = Vector2i(7, 1);
+const atlas_wall_t = Vector2i(2, 0);
+const atlas_wall_b = Vector2i(2, 1);
+const atlas_wall_l = Vector2i(4, 1);
+const atlas_wall_r = Vector2i(5, 0);
 
-const atlas_floor = Vector2i(1, 1);
+const atlas_floor = Vector2i(6, 0);
 
 var bounds: Rect2i
 var doors: Array[Vector2i]
@@ -48,15 +48,15 @@ func draw():
 		for y in range(bounds.position.y, bounds.end.y + 1):
 			var pos = Vector2i(x, y)
 			if x == bounds.position.x:
-				set_cell(pos, 2, atlas_wall_l)
+				set_cell(pos, 0, atlas_wall_l)
 			elif x == bounds.end.x:
-				set_cell(pos, 2, atlas_wall_r)
+				set_cell(pos, 0, atlas_wall_r)
 			elif y == bounds.position.y:
-				set_cell(pos, 2, atlas_wall_t)
+				set_cell(pos, 0, atlas_wall_t)
 			elif y == bounds.end.y:
-				set_cell(pos, 2, atlas_wall_b)
+				set_cell(pos, 0, atlas_wall_b)
 			else:
-				set_cell(pos, 2, atlas_floor)
+				set_cell(pos, 0, atlas_floor)
 	
 	# Corners
 	var top_l = bounds.position
@@ -64,14 +64,14 @@ func draw():
 	var bot_r = bounds.end
 	var bot_l = Vector2i(bounds.position.x, bounds.end.y)
 	
-	set_cell(top_l, 2, atlas_wall_tl)
-	set_cell(top_r, 2, atlas_wall_tr)
-	set_cell(bot_r, 2, atlas_wall_br)
-	set_cell(bot_l, 2, atlas_wall_bl)
+	set_cell(top_l, 0, atlas_wall_tl)
+	set_cell(top_r, 0, atlas_wall_tr)
+	set_cell(bot_r, 0, atlas_wall_br)
+	set_cell(bot_l, 0, atlas_wall_bl)
 	
 	# Doors
 	for door in doors:
-		set_cell(door, 2, atlas_floor)
+		set_cell(door, 0, atlas_floor)
 
 func spawn_enemy(dead):
 	print("spawning")
