@@ -29,7 +29,6 @@ func _show_text_box():
 	get_tree().get_root().add_child(text_box)
 	
 	_update_text_box_position()
-	
 	text_box.display_text(dialogue_lines[current_line_index])
 	can_advance_line = false
 	
