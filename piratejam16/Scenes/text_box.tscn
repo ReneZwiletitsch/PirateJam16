@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://b6xxbbbcya5ae"]
+[gd_scene load_steps=8 format=3 uid="uid://dp77psfovhsld"]
 
 [ext_resource type="Script" path="res://scripts/text_box.gd" id="1_4c4ko"]
 [ext_resource type="Texture2D" uid="uid://jcfvos82q05u" path="res://assets/asperite_projects/DialogueBubble.png" id="2_jboi8"]

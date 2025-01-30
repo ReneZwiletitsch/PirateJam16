@@ -489,8 +489,9 @@ script = ExtResource("2_moamb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_h1yg5")
-animation = &"boss_idle_left"
+animation = &"alive_walking_left"
 autoplay = "alive_walking_right"
+frame_progress = 0.590919
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_gebq4")

@@ -21,10 +21,6 @@ var num_rooms: int = 5;
 var num_enemies: int = 2;
 var num_dead_bodies: int = 0;
 
-
-
-
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	generate_rooms()
@@ -47,7 +43,7 @@ func _process(_delta: float) -> void:
 						
 		var alive_check = false
 		for i in Singleton.all_ai_char_instances:
-			if (i.global_position - Singleton.player_position).length()< Singleton.necromancy_range and i.dead and not i.fully_dead:
+			if (i.global_position - Singleton.player_position).length() < Singleton.necromancy_range and i.dead and not i.fully_dead:
 				alive_check = true
 		if not alive_check:
 			Singleton.game_lost = true

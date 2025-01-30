@@ -72,8 +72,6 @@ func draw():
 	# Doors
 	for door in doors:
 		set_cell(door, 2, atlas_floor)
-	
-
 
 func spawn_enemy(dead):
 	print("spawning")
@@ -94,11 +92,6 @@ func spawn_enemy(dead):
 	else:
 		instance.load_attributes(instance.character.alive)
 	return instance
-	
-	
-	
-	
-	
 
 # func stop_enemies():
 # 	for enemies in enemy:
