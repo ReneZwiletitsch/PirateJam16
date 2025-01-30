@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=3 uid="uid://dm77ptpohrroj"]
+[gd_scene load_steps=68 format=3 uid="uid://dm77ptpohrroj"]
 
 [ext_resource type="Texture2D" uid="uid://dwmotiryhyoci" path="res://assets/sprites/characters/fully_dead.png" id="2_62yb5"]
 [ext_resource type="Script" path="res://scripts/ai_char.gd" id="2_moamb"]
@@ -12,7 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://hrmu7j50hwl6" path="res://assets/sprites/characters/Basic_undead-Sheet.png" id="6_k55w1"]
 [ext_resource type="Texture2D" uid="uid://bquxlj45j5bsg" path="res://assets/sprites/characters/fighting_boss_mirrored.png" id="8_fd1et"]
 [ext_resource type="Texture2D" uid="uid://jy4vk3l3tyle" path="res://assets/sprites/characters/fighting_boss.png" id="9_8llwn"]
-[ext_resource type="Texture2D" uid="uid://bqr10tii5v174" path="res://assets/sprites/characters/necro_idle.png" id="10_kke0i"]
+[ext_resource type="Texture2D" uid="uid://dkds4e5c5lu3a" path="res://assets/sprites/characters/necro_idle_left.png" id="10_1m6jv"]
+[ext_resource type="Texture2D" uid="uid://lwyskfp2kad4" path="res://assets/sprites/characters/necro_idle_right.png" id="11_5e35c"]
 [ext_resource type="Texture2D" uid="uid://bu048j6h35mvl" path="res://assets/sprites/characters/necro_run.png" id="11_pfd33"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_45456"]
@@ -131,28 +132,28 @@ region = Rect2(128, 0, 64, 64)
 atlas = ExtResource("9_8llwn")
 region = Rect2(192, 0, 64, 64)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_e1tvo"]
-atlas = ExtResource("10_kke0i")
+[sub_resource type="AtlasTexture" id="AtlasTexture_45yfr"]
+atlas = ExtResource("10_1m6jv")
 region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_rca4u"]
-atlas = ExtResource("10_kke0i")
+[sub_resource type="AtlasTexture" id="AtlasTexture_0bsov"]
+atlas = ExtResource("10_1m6jv")
 region = Rect2(32, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_qar0o"]
-atlas = ExtResource("10_kke0i")
+[sub_resource type="AtlasTexture" id="AtlasTexture_jy4qk"]
+atlas = ExtResource("10_1m6jv")
 region = Rect2(64, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_qr5xs"]
-atlas = ExtResource("10_kke0i")
+[sub_resource type="AtlasTexture" id="AtlasTexture_v2i30"]
+atlas = ExtResource("11_5e35c")
 region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_n85eq"]
-atlas = ExtResource("10_kke0i")
+[sub_resource type="AtlasTexture" id="AtlasTexture_1xrx5"]
+atlas = ExtResource("11_5e35c")
 region = Rect2(32, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_5gf06"]
-atlas = ExtResource("10_kke0i")
+[sub_resource type="AtlasTexture" id="AtlasTexture_sbp55"]
+atlas = ExtResource("11_5e35c")
 region = Rect2(64, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rr2tf"]
@@ -375,13 +376,13 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_e1tvo")
+"texture": SubResource("AtlasTexture_45yfr")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_rca4u")
+"texture": SubResource("AtlasTexture_0bsov")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_qar0o")
+"texture": SubResource("AtlasTexture_jy4qk")
 }],
 "loop": true,
 "name": &"necromancer_idle_left",
@@ -389,13 +390,13 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_qr5xs")
+"texture": SubResource("AtlasTexture_v2i30")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_n85eq")
+"texture": SubResource("AtlasTexture_1xrx5")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_5gf06")
+"texture": SubResource("AtlasTexture_sbp55")
 }],
 "loop": true,
 "name": &"necromancer_idle_right",
@@ -489,8 +490,9 @@ script = ExtResource("2_moamb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_h1yg5")
-animation = &"boss_idle_left"
+animation = &"necromancer_idle_right"
 autoplay = "alive_walking_right"
+frame_progress = 0.0550287
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_gebq4")

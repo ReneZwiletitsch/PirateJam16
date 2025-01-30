@@ -1,6 +1,7 @@
 class_name Player
 extends CharacterBody2D
 
+@onready var which_dialogue 
 
 func _ready() -> void:
 	call_deferred("_start_dialogue")

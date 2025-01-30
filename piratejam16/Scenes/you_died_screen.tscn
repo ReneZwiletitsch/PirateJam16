@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://beacieoma5fcv"]
+
+[ext_resource type="Texture2D" uid="uid://to3lcppmj1gr" path="res://assets/screens/You died.png" id="1_j42qw"]
+
+[node name="You Died Screen" type="Sprite2D"]
+texture = ExtResource("1_j42qw")
+
+[node name="Camera2D" type="Camera2D" parent="."]

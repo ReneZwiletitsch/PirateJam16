@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://h8vninix101g"]
+
+[ext_resource type="Texture2D" uid="uid://cmhqawxdwtohq" path="res://assets/screens/You win.png" id="1_d8588"]
+
+[node name="Game Won Screen" type="Sprite2D"]
+texture = ExtResource("1_d8588")
+
+[node name="Camera2D" type="Camera2D" parent="."]
