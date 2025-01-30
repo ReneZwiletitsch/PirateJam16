@@ -124,7 +124,7 @@ func set_movement_target(movement_target: Vector2):
 func character_damage():
 	if (global_position-Singleton.current_character.global_position).length()<attack_range and not playercontrol and not dead:
 		current_char.curr_hp -= Singleton.current_player_strenght
-		print("character got dmg",current_char.curr_hp)
+		#print("character got dmg",current_char.curr_hp)
 		var scene = preload("res://Scenes/damage_indicator.tscn")
 		var instance = scene.instantiate()
 		add_child(instance,true)
@@ -207,16 +207,6 @@ func _on_attack_timer_timeout() -> void:
 			instance.label.set("theme_override_colors/font_color", Color(1, 0, 1, 1))
 			instance.global_position = Singleton.current_character.global_position
 			
-		
-		
-	else:
-		print("ERROR, SOMETHING WRONG WITH ATTACK")
-		print("probably no character")
-		
-
-
-
-
 
 func _physics_process(delta):
 	#walk towards player, except if you are possesed by the player; temp, should be dependent on sight range or something
