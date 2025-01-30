@@ -58,6 +58,7 @@ shape = SubResource("RectangleShape2D_mi883")
 
 [node name="Player" parent="." instance=ExtResource("2_ny7hd")]
 visible = false
+z_index = 2
 position = Vector2(144, 80)
 
 [node name="Camera2D" type="Camera2D" parent="."]
