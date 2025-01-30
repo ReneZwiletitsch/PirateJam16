@@ -18,8 +18,8 @@ var num_rooms: int = 5;
 
 @onready var rooms :=[]
 
-var num_enemies: int = 1;
-var num_dead_bodies: int = 2;
+var num_enemies: int = 2;
+var num_dead_bodies: int = 0;
 
 
 
@@ -176,12 +176,31 @@ func tiled_room_from_graph(grid_pos: Vector2i, doors: Array[TransitionDir]):
 	inst.doors = doors_pos
 	add_child(inst, true)
 	
+	#reload character you came into the level with
+	if Singleton.current_character and Singleton.curr_char_stats:
+		Singleton.current_character = inst.spawn_enemy(false)
+		Singleton.current_character.load_attributes(Singleton.current_character.character.undead)
+		Singleton.current_character.current_char.strenght = Singleton.curr_char_stats[0]
+		Singleton.current_character.current_char.speed = Singleton.curr_char_stats[1]
+		Singleton.current_character.current_char.dex = Singleton.curr_char_stats[2]
+		Singleton.current_character.current_char.willpower = Singleton.curr_char_stats[3]
+		Singleton.current_character.current_char.curr_hp = Singleton.curr_char_stats[4]
+		Singleton.curr_char_stats = null
 	
-	for i in range(num_enemies):
+	#in the first room, spawn 3 dead bodies and an enemy
+	if Singleton.curr_char_stats:
+		for i in range(3):
+			inst.spawn_enemy(true)
+		Singleton.player_position = inst.global_position
 		inst.spawn_enemy(false)
-	for i in range(num_dead_bodies):
-		inst.spawn_enemy(true)
-	
+		Singleton.curr_char_stats = null
+	#in the other ones, spawn as specified at the top
+	else:
+		for i in range(num_enemies):
+			inst.spawn_enemy(false)
+		for i in range(num_dead_bodies):
+			inst.spawn_enemy(true)
+		
 	return inst
 
 

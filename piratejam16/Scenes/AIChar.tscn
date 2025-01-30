@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://dm77ptpohrroj"]
+[gd_scene load_steps=67 format=3 uid="uid://dm77ptpohrroj"]
 
 [ext_resource type="Texture2D" uid="uid://dwmotiryhyoci" path="res://assets/sprites/characters/fully_dead.png" id="2_62yb5"]
 [ext_resource type="Script" path="res://scripts/ai_char.gd" id="2_moamb"]
@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://c3feec1ugw6on" path="res://assets/sprites/characters/Basic_alive.png" id="4_i6bii"]
 [ext_resource type="Texture2D" uid="uid://bbxth5j8bu0me" path="res://assets/sprites/characters/Basic_undead.png" id="4_r1r8o"]
 [ext_resource type="Texture2D" uid="uid://b5r3umso2ul3v" path="res://assets/sprites/characters/Basic_alive-Sheet.png" id="4_yp5so"]
-[ext_resource type="Texture2D" uid="uid://c6cle63voqr51" path="res://assets/sprites/characters/boss.png" id="5_wl4re"]
+[ext_resource type="Texture2D" uid="uid://darsc0h08qwes" path="res://assets/sprites/characters/skeli_anim-Sheet.png" id="5_hekd7"]
 [ext_resource type="Texture2D" uid="uid://ds1i7gbxe4fvg" path="res://assets/sprites/characters/Basic_undead_mirrored-Sheet.png" id="6_g1b3n"]
 [ext_resource type="Texture2D" uid="uid://hrmu7j50hwl6" path="res://assets/sprites/characters/Basic_undead-Sheet.png" id="6_k55w1"]
 [ext_resource type="Texture2D" uid="uid://bquxlj45j5bsg" path="res://assets/sprites/characters/fighting_boss_mirrored.png" id="8_fd1et"]
@@ -50,6 +50,46 @@ region = Rect2(128, 0, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_jafu4"]
 atlas = ExtResource("4_yp5so")
 region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4xyff"]
+atlas = ExtResource("5_hekd7")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bjsa2"]
+atlas = ExtResource("5_hekd7")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r6ag4"]
+atlas = ExtResource("5_hekd7")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wku8t"]
+atlas = ExtResource("5_hekd7")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iaeo5"]
+atlas = ExtResource("5_hekd7")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_brugc"]
+atlas = ExtResource("5_hekd7")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2d050"]
+atlas = ExtResource("5_hekd7")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_euo23"]
+atlas = ExtResource("5_hekd7")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5m1yr"]
+atlas = ExtResource("5_hekd7")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wue0n"]
+atlas = ExtResource("5_hekd7")
+region = Rect2(256, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mq45s"]
 atlas = ExtResource("8_fd1et")
@@ -229,7 +269,19 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("5_wl4re")
+"texture": SubResource("AtlasTexture_4xyff")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bjsa2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r6ag4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wku8t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iaeo5")
 }],
 "loop": true,
 "name": &"boss_idle_left",
@@ -237,7 +289,19 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("5_wl4re")
+"texture": SubResource("AtlasTexture_brugc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2d050")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_euo23")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5m1yr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wue0n")
 }],
 "loop": true,
 "name": &"boss_idle_right",
@@ -425,7 +489,7 @@ script = ExtResource("2_moamb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_h1yg5")
-animation = &"necromancer_walking_left"
+animation = &"boss_idle_left"
 autoplay = "alive_walking_right"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -49,7 +49,7 @@ func load_attributes(char_to_load):
 	last_animation = texture_type+"_idle_right"
 	attack_range = attribute_list[char_to_load][attribute.attack_range]
 	$AnimatedSprite2D.set_animation(texture_type+"_idle_right")
-
+	
 
 func necromancy():
 	if not dead and playercontrol:
@@ -72,9 +72,7 @@ func necromancy():
 			Singleton.current_player_strenght = current_char.strenght
 			Singleton.current_player_dex = current_char.dex
 
-				
 
-	
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -126,6 +124,19 @@ func character_damage():
 	if (global_position-Singleton.current_character.global_position).length()<attack_range and not playercontrol and not dead:
 		current_char.curr_hp -= Singleton.current_player_strenght
 		print("character got dmg",current_char.curr_hp)
+		var scene = preload("res://Scenes/damage_indicator.tscn")
+		var instance = scene.instantiate()
+		add_child(instance,true)
+		instance.label.text = str(Singleton.current_player_strenght)
+		if character_index ==	attribute_list[character.alive][attribute.character_index]:
+			instance.label.set("theme_override_colors/font_color", Color(1, 0, 1, 1))
+			
+		elif character_index ==	attribute_list[character.fighting_boss][attribute.character_index]:
+			instance.label.set("theme_override_colors/font_color", Color.YELLOW)
+		
+		
+		
+		
 		if current_char.curr_hp <=0:
 			print("character has died")
 			current_char.curr_hp = current_char.max_hp
@@ -176,12 +187,25 @@ func _on_attack_timer_timeout() -> void:
 		var enemy_vec = enemy_pos.normalized()
 		if abs(acos(aim.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< attack_range:
 			Singleton.player_damage(current_char.strenght)
+			var scene = preload("res://Scenes/damage_indicator.tscn")
+			var instance = scene.instantiate()
+			add_child(instance,true)
+			instance.label.text = str(current_char.strenght)
+			instance.label.set("theme_override_colors/font_color", Color.YELLOW)
+			instance.global_position = Singleton.current_character.global_position
+			
 	elif character_index == attribute_list[character.fighting_boss][attribute.character_index] and Singleton.current_character != null: #fighting boss
 		var enemy_pos = Singleton.current_character.global_position-global_position
 		var enemy_vec = enemy_pos.normalized()
 		if abs(acos(aim.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< attack_range:
 			Singleton.boss_damage(current_char.strenght)
-		
+			var scene = preload("res://Scenes/damage_indicator.tscn")
+			var instance = scene.instantiate()
+			add_child(instance,true)
+			instance.label.text = str(current_char.strenght)
+			instance.label.set("theme_override_colors/font_color", Color(1, 0, 1, 1))
+			instance.global_position = Singleton.current_character.global_position
+			
 		
 		
 	else:
@@ -223,6 +247,8 @@ func _physics_process(delta):
 			elif playercontrol and current_agent_position.distance_to(Vector2(0.0,0.0))<attack_range:
 				AI_input = Vector2(0,0)
 
+		if current_agent_position.distance_to(movement_target_position)>Singleton.aggro_range:
+			AI_input = Vector2(0,0)
 	else:
 		AI_input = Vector2(0,0)
 	

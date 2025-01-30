@@ -93,7 +93,7 @@ func spawn_enemy(dead):
 		instance.load_attributes(instance.character.dead)
 	else:
 		instance.load_attributes(instance.character.alive)
-	
+	return instance
 	
 	
 	
