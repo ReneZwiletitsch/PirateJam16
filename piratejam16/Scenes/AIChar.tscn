@@ -634,7 +634,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gebq4"]
-radius = 0.0
+radius = 0.01
 
 [node name="AIChar" type="CharacterBody2D"]
 z_index = 2
@@ -642,7 +642,7 @@ script = ExtResource("2_moamb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_h1yg5")
-animation = &"necromancer_dead_idle_right"
+animation = &"dead_idle_right"
 autoplay = "alive_walking_right"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
