@@ -170,8 +170,6 @@ func player_attack(mouse_vec,boss):
 			instance.global_position = boss_instance.global_position
 
 	
-
-
 func second_phase():
 	print("TEMP all ai dead, starting second phase")
 	await get_tree().create_timer(2).timeout
@@ -185,8 +183,12 @@ func second_phase():
 func _process(delta: float) -> void:
 	if Singleton.boss_defeated:
 		print("YOU WON")
+		Singleton.game_lost = true
+		get_tree().change_scene_to_file("res://Scenes/game_won_screen.tscn")
 	if Singleton.player_died:
 		print("YOU LOST")
+		Singleton.game_lost = true
+		get_tree().change_scene_to_file("res://Scenes/you_died_screen.tscn")
 
 	if not second_phase_triggered:
 		var in_phase_one := false

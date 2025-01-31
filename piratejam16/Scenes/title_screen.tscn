@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://bqdmnt77ckk02"]
+[gd_scene load_steps=3 format=3 uid="uid://b4p87gwij077e"]
 
-[ext_resource type="Texture2D" path="res://assets/screens/title screen.png" id="1_4bd28"]
+[ext_resource type="Texture2D" uid="uid://ck3aywqhsni5g" path="res://assets/screens/title screen.png" id="1_4bd28"]
 [ext_resource type="Script" path="res://scripts/title_screen.gd" id="2_feyae"]
 
 [node name="TitleScreen" type="Sprite2D"]

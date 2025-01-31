@@ -1,8 +1,26 @@
-[gd_scene load_steps=2 format=3 uid="uid://ke8h7ucutq4b"]
+[gd_scene load_steps=3 format=3 uid="uid://cyiv7ra71wa4h"]
 
-[ext_resource type="Texture2D" path="res://assets/screens/pause.png" id="1_ne6pb"]
+[ext_resource type="Texture2D" uid="uid://dpckv1llqjwbh" path="res://assets/screens/pause.png" id="1_ne6pb"]
+[ext_resource type="Script" path="res://scripts/pause_screen.gd" id="2_k6pev"]
 
 [node name="Pause Screen" type="Sprite2D"]
 texture = ExtResource("1_ne6pb")
+script = ExtResource("2_k6pev")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="UnpauseButton" type="Button" parent="."]
+offset_left = -375.0
+offset_top = 162.0
+offset_right = -298.0
+offset_bottom = 193.0
+text = "Unpause"
+
+[node name="QuitToMainMenuButton" type="Button" parent="."]
+offset_left = 211.0
+offset_top = 161.0
+offset_right = 366.0
+offset_bottom = 192.0
+text = "Quit to main menu"
+
+[connection signal="button_down" from="QuitToMainMenuButton" to="." method="_on_quit_to_main_menu_button_button_down"]

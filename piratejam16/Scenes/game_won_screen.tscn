@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bsdmqqw4yuk2n"]
 
-[ext_resource type="Texture2D" path="res://assets/screens/You win.png" id="1_d8588"]
+[ext_resource type="Texture2D" uid="uid://cmhqawxdwtohq" path="res://assets/screens/You win.png" id="1_d8588"]
 [ext_resource type="Script" path="res://scripts/game_won_screen.gd" id="2_srtk8"]
 
 [node name="Game Won Screen" type="Sprite2D"]
@@ -10,12 +10,18 @@ script = ExtResource("2_srtk8")
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="PlayAgainButton" type="Button" parent="."]
-offset_right = 8.0
-offset_bottom = 8.0
+offset_left = -386.0
+offset_top = 162.0
+offset_right = -298.0
+offset_bottom = 193.0
+text = "Play Again"
 
-[node name="QuitButton" type="Button" parent="."]
-offset_right = 8.0
-offset_bottom = 8.0
+[node name="QuitToMainMenuButton" type="Button" parent="."]
+offset_left = 254.0
+offset_top = 170.0
+offset_right = 409.0
+offset_bottom = 201.0
+text = "Quit to main menu"
 
 [connection signal="button_down" from="PlayAgainButton" to="." method="_on_play_again_button_button_down"]
-[connection signal="button_down" from="QuitButton" to="." method="_on_quit_button_button_down"]
+[connection signal="button_down" from="QuitToMainMenuButton" to="." method="_on_quit_to_main_menu_button_button_down"]

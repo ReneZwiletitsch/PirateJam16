@@ -37,7 +37,13 @@ func _process(_delta: float) -> void:
 				alive_check = true
 		if not alive_check:
 			Singleton.game_lost = true
+			#for child in get_tree().get_root().get_children():
+			#	if child is MarginContainer:
+			#		print("freeing this: ")
+			#		print(child)
+			#		child.queue_free()
 			print("YOU DIED")
+			get_tree().change_scene_to_file("res://Scenes/you_died_screen.tscn")
 
 func _physics_process(delta):
 	if Singleton.current_character and frames_since_targeting %60 ==0:

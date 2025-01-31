@@ -1,8 +1,27 @@
-[gd_scene load_steps=2 format=3 uid="uid://dbv4ey5ljdu4u"]
+[gd_scene load_steps=3 format=3 uid="uid://bxwqwfwsd0tj7"]
 
-[ext_resource type="Texture2D" path="res://assets/screens/You died.png" id="1_j42qw"]
+[ext_resource type="Texture2D" uid="uid://to3lcppmj1gr" path="res://assets/screens/You died.png" id="1_j42qw"]
+[ext_resource type="Script" path="res://scripts/you_died_screen.gd" id="2_tkuon"]
 
 [node name="You Died Screen" type="Sprite2D"]
 texture = ExtResource("1_j42qw")
+script = ExtResource("2_tkuon")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="PlayAgainButton" type="Button" parent="."]
+offset_left = -362.0
+offset_top = 155.0
+offset_right = -275.0
+offset_bottom = 186.0
+text = "Play again"
+
+[node name="QuitToMainMenuButton" type="Button" parent="."]
+offset_left = 206.0
+offset_top = 164.0
+offset_right = 361.0
+offset_bottom = 195.0
+text = "Quit to main menu"
+
+[connection signal="button_down" from="PlayAgainButton" to="." method="_on_play_again_button_button_down"]
+[connection signal="button_down" from="QuitToMainMenuButton" to="." method="_on_quit_to_main_menu_button_button_down"]

@@ -1,8 +1,10 @@
 extends Node
 
 const how_to_play: Array[String] = [
+	"Hover over a corpse and press C to resurrect!",
 	"WASD to move",
-	"Hover over a corpse and press C to resurrect!"
+	"LMB to attack",
+	"use stairs to get to the next level",
 ]
 
 
