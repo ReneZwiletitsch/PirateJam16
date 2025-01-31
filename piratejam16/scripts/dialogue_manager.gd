@@ -62,7 +62,7 @@ func _update_text_box_position():
 		text_box.global_position = text_box_position + Vector2(-45, -25)
 
 func _update_to_mouse():
-	if mouse_position:
+	if mouse_position and is_instance_valid(text_box):
 		text_box.global_position = mouse_position - Vector2(0, 15)
 
 func _on_text_box_finished_displaying():
