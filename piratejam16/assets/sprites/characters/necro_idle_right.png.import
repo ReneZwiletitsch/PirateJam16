@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3feec1ugw6on"
-path="res://.godot/imported/Basic_alive.png-f928ca5d472af011f0c8df9552ba3456.ctex"
+uid="uid://bu7ubmim4lpgx"
+path="res://.godot/imported/necro_idle_right.png-545f03d95e8e6aa095fcc798bc2cec80.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/characters/Basic_alive.png"
-dest_files=["res://.godot/imported/Basic_alive.png-f928ca5d472af011f0c8df9552ba3456.ctex"]
+source_file="res://assets/sprites/characters/necro_idle_right.png"
+dest_files=["res://.godot/imported/necro_idle_right.png-545f03d95e8e6aa095fcc798bc2cec80.ctex"]
 
 [params]
 

@@ -106,7 +106,7 @@ func _process(delta: float) -> void:
 		load_attributes(character.fully_dead)
 		Singleton.current_character = null
 		Singleton.player_position = global_position+ Vector2(0,40)
-		self.set_scale(Vector2(0.5,0.5))
+		#self.set_scale(Vector2(0.5,0.5))
 		self.position += Vector2(0,16)
 		self.set_z_index(0)
 
