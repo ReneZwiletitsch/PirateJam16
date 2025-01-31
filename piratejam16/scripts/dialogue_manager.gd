@@ -12,10 +12,11 @@ var text_box_position: Node2D
 var is_dialogue_active = false
 var can_advance_line = false
 
+
 func start_dialogue(player: Node2D, lines: Array[String]):
 	if is_dialogue_active:
 		return
-		
+	
 	dialogue_lines = lines
 	text_box_position = player
 	_show_text_box()
@@ -45,7 +46,7 @@ func _on_text_box_finished_displaying():
 	can_advance_line = true
 
 func _unhandled_input(event):
-	if (event.is_action_pressed("advance_dialogue") && is_dialogue_active && can_advance_line):
+	if (event.is_action_pressed("advance_dialogue") and is_dialogue_active and can_advance_line):
 		text_box.queue_free()
 		
 		current_line_index += 1

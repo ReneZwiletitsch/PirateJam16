@@ -47,22 +47,39 @@ func _process(_delta: float) -> void:
 			get_tree().change_scene_to_file("res://Scenes/you_died_screen.tscn")
 
 func _physics_process(delta):
-	if Singleton.current_character and frames_since_targeting %60 ==0:
-		var shortest_distance=9999
-		var closest_enemy = null
-		for i in Singleton.all_ai_char_instances:
-			if not i.playercontrol and not i.dead:
-				if (i.global_position-Singleton.current_character.global_position).length() < shortest_distance:
-					shortest_distance = (i.global_position-Singleton.current_character.global_position).length()
-					closest_enemy = i
-		if closest_enemy:
-			print("###################")
-			print(closest_enemy.global_position)
-			print((closest_enemy.global_position-Singleton.current_character.global_position).length())
-			Singleton.current_character.movement_target_position  = closest_enemy.global_position
+	if frames_since_targeting %60 ==0:
+		if Singleton.current_character:
+			var shortest_distance=9999
+			var closest_enemy = null
+			for i in Singleton.all_ai_char_instances:
+				if not i.playercontrol and not i.dead:
+					if (i.global_position-Singleton.current_character.global_position).length() < shortest_distance:
+						shortest_distance = (i.global_position-Singleton.current_character.global_position).length()
+						closest_enemy = i
+			if closest_enemy:
+				print("###################")
+				print(closest_enemy.global_position)
+				print((closest_enemy.global_position-Singleton.current_character.global_position).length())
+				Singleton.current_character.movement_target_position  = closest_enemy.global_position
 		frames_since_targeting = 1
 	else:
 		frames_since_targeting +=1
+	
+	var mouse_pos = get_global_mouse_position()
+	for i in Singleton.all_ai_char_instances:
+		if i.dead and ((mouse_pos - i.global_position).length()) <= 20:
+			
+		# We're hovering over a dead corpse. Display stats
+			
+			var stats_list: Array[String] = [
+			"Current HP: " + str(i.current_char.curr_hp) + "\n" \
+			+ "Strength: " + str(i.current_char.strenght) + "\n" \
+			+ "Speed: " + str(i.current_char.speed) + "\n" \
+			+ "Dexterity: " + str(i.current_char.dex) + "\n" \
+			+ "Willpower: " + str(i.current_char.willpower)
+		]
+			print("Mouse is hovering over the character. Dialogue for character stats")
+			DialogueManager.start_dialogue(i, stats_list)
 		
 
 func _input(event):
@@ -93,7 +110,7 @@ func _input(event):
 func player_attack(mouse_vec,boss):
 	for i in Singleton.all_ai_char_instances:
 		if i.character_index != i.attribute_list[i.character.undead][i.attribute.character_index]:
-			#check if in cone	
+			#check if in cone
 			var enemy_pos = (i.global_position-Singleton.current_character.global_position)
 			var enemy_vec = enemy_pos.normalized()
 			if abs(acos(mouse_vec.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< Singleton.basic_character_range:
