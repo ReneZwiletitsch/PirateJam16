@@ -22,12 +22,13 @@ func _input(event):
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	print(get_parent())
 	#camera zooms into necromancer
 	var x = -100
 	var y = 100
 	var camera_start = Vector2(x, y);
-	$Camera2D.set_position(camera_start)
-	$Camera2D.zoom = Vector2(5,5)
+	$"../../Camera2D".set_position(camera_start)
+	$"../../Camera2D".zoom = Vector2(5,5)
 	
 	Singleton.aggro_range = 9999999
 	#temp, just for debugging
@@ -65,8 +66,8 @@ func _ready() -> void:
 		var lerp_pos = float(i)/float(lerp_secs);
 		var camera_2_zoom = lerp(start_zoom, end_zoom, lerp_pos)
 		var camera_2_pos = camera_start.lerp(Vector2(25, 0), lerp_pos)
-		$Camera2D.set_position(camera_2_pos)
-		$Camera2D.zoom = Vector2(camera_2_zoom, camera_2_zoom)
+		$"../../Camera2D".set_position(camera_2_pos)
+		$"../../Camera2D".zoom = Vector2(camera_2_zoom, camera_2_zoom)
 	
 	DialogueManager.fuck_this_shit()
 	await get_tree().create_timer(1).timeout 
@@ -128,8 +129,6 @@ func spawn_necromancer():
 	instance.player_attack_woundup.connect(player_attack)
 	necromancer_instance = instance
 	
-
-
 
 func spawn_ai_char(dead,fully_dead):
 	print("spawning")

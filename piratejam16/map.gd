@@ -54,7 +54,7 @@ func next_floor():
 		DialogueManager.fuck_this_shit()
 		level.queue_free()
 		Singleton.current_character = null
-		$"../Camera2D".queue_free()
+		#$"../Camera2D".queue_free()
 		var inst = boss_room.instantiate()
 		add_child(inst, true)
 		level = inst
