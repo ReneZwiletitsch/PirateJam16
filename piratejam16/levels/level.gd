@@ -66,7 +66,7 @@ func _physics_process(delta):
 	
 	var mouse_pos = get_global_mouse_position()
 	for i in Singleton.all_ai_char_instances:
-		if i.dead and ((mouse_pos - i.global_position).length()) <= 20:
+		if i.dead and ((mouse_pos - i.global_position).length()) <= 15:
 			
 		# We're hovering over a dead corpse. Display stats
 			
@@ -75,10 +75,10 @@ func _physics_process(delta):
 			+ "Strength: " + str(i.current_char.strenght) + "\n" \
 			+ "Speed: " + str(i.current_char.speed) + "\n" \
 			+ "Dexterity: " + str(i.current_char.dex) + "\n" \
-			+ "Willpower: " + str(i.current_char.willpower)
+			+ "Willpower: " + str(floor(i.current_char.willpower * 100) / 100)
 		]
 			print("Mouse is hovering over the character. Dialogue for character stats")
-			DialogueManager.start_dialogue(i, stats_list)
+			DialogueManager.pop_up(mouse_pos, stats_list)
 		
 
 func _input(event):
