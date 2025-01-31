@@ -12,57 +12,34 @@ var text_box_position = Vector2(0,0)
 var is_dialogue_active = false
 var can_advance_line = false
 
-var mouse_position
 
 func start_dialogue(player: Node2D, lines: Array[String]):
 	if is_dialogue_active:
 		return
 	
 	dialogue_lines = lines
-	text_box_position = player
-	_show_text_box(true)
+	_show_text_box()
 	
 	is_dialogue_active = true
 
-func pop_up(pos: Vector2, lines: Array[String]):
-	mouse_position = pos
-	
-	if is_instance_valid(text_box):
-		# Check if text box already exists. 
-		_update_to_mouse()
-		text_box.display_text(lines[0], false)
-	else:
-		dialogue_lines = lines
-		# show the text: Not dialogue
-		_show_text_box(false)
 
-	
-func _show_text_box(is_dialogue):
+func _show_text_box():
 	text_box = text_box_scene.instantiate()
+	text_box.finished_displaying.connect(_on_text_box_finished_displaying)
 	get_tree().get_root().add_child(text_box)
 	
-	if is_dialogue:
-		text_box.finished_displaying.connect(_on_text_box_finished_displaying)
-		_update_text_box_position()
-		text_box.display_text(dialogue_lines[current_line_index], is_dialogue)
-		can_advance_line = false
-	else:
-		_update_to_mouse()
-		text_box.display_text(dialogue_lines[current_line_index], is_dialogue)
+	_update_text_box_position()
+	text_box.display_text(dialogue_lines[current_line_index])
+	can_advance_line = false
+	
 
 func _process(delta: float) -> void:
 	if is_dialogue_active and text_box and text_box_position:
 		_update_text_box_position()
-	elif not is_dialogue_active and text_box and text_box_position:
-		_update_to_mouse()
 
 func _update_text_box_position():
 	if text_box and text_box_position:
 		text_box.global_position = text_box_position# + Vector2(-45, -25)
-
-func _update_to_mouse():
-	if mouse_position:
-		text_box.global_position = mouse_position - Vector2(0, 15)
 
 func _on_text_box_finished_displaying():
 	can_advance_line = true
@@ -77,15 +54,11 @@ func _unhandled_input(event):
 			current_line_index = 0
 			return
 			
-		_show_text_box(true)
-	elif (event.is_action_pressed("skip_dialogue")):
-		fuck_this_shit()
-
-
+		_show_text_box()
+		
+		
 func fuck_this_shit():
-	if is_dialogue_active:
-		is_dialogue_active = false
+	if is_instance_valid(text_box):
 		current_line_index = 0
-		if is_instance_valid(text_box):
-			text_box.queue_free()
-			text_box = null
+		is_dialogue_active = false
+		text_box.queue_free()
