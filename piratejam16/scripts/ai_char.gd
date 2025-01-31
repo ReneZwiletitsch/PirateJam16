@@ -26,7 +26,7 @@ signal player_attack_woundup(aim,boss)
 
 @onready var boss_fight := false
 
-enum character {alive,dead,undead,fully_dead,fighting_boss,boss,necromancer}
+enum character {alive,dead,undead,fully_dead,fighting_boss,boss,necromancer,necromancer_dead}
 enum attribute {character_index,dead,fully_dead,playercontrol,texture_type,attack_range}
 var attribute_list = [
 			[0,false,false,false,"alive",Singleton.basic_character_range], #alive
@@ -35,7 +35,7 @@ var attribute_list = [
 			[3,true,true,false,"deadge",0], #fully dead
 			[4,false,false,false,"fighting_boss",Singleton.basic_character_range], #fighting boss
 			[5,false,false,false,"boss",Singleton.basic_character_range*2], #boss
-			[6,true,false,true,"necromancer",Singleton.basic_character_range], #necromancer
+			[6,false,false,true,"necromancer",Singleton.basic_character_range], #necromancer
 			[7,true,false,true,"necromancer_dead",Singleton.basic_character_range], #necromancer
 			]
 

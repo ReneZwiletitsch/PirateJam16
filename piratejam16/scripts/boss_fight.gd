@@ -48,7 +48,7 @@ func _ready() -> void:
 	#zoomed in at necromancer dead
 	spawn_necromancer()
 	await get_tree().create_timer(2).timeout
-	necromancer_instance.dead = false
+	necromancer_instance.load_attributes(necromancer_instance.character.necromancer)
 	#necromancer stands up
 	print("TEMP necromancer revived")
 	
@@ -113,7 +113,7 @@ func spawn_necromancer():
 	var instance = scene.instantiate()
 	instance.position = Vector2(x,y)
 	add_child(instance,true)
-	instance.load_attributes(instance.character.necromancer)
+	instance.load_attributes(instance.character.necromancer_dead)
 	instance.current_char.strenght = 100
 	instance.current_char.dex = 30
 	instance.current_char.willpower = 1
