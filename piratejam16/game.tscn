@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://do5rj2k3k24xt"]
+[gd_scene load_steps=9 format=3 uid="uid://do5rj2k3k24xt"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_hwito"]
 [ext_resource type="Script" path="res://map.gd" id="1_mpa87"]
 [ext_resource type="Script" path="res://levels/stairs.gd" id="2_beivp"]
 [ext_resource type="Texture2D" uid="uid://dpckv1llqjwbh" path="res://assets/screens/pause.png" id="4_ddmvq"]
+[ext_resource type="AudioStream" uid="uid://brlmmu28r7vye" path="res://assets/audio/dirt-012.ogg" id="5_d08sn"]
+[ext_resource type="AudioStream" uid="uid://52d32oxtbo48" path="res://assets/audio/background_general.wav" id="5_gbgpv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mi883"]
 
@@ -88,6 +90,15 @@ offset_top = 161.0
 offset_right = 366.0
 offset_bottom = 192.0
 text = "Quit to main menu"
+
+[node name="General_Background" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_gbgpv")
+volume_db = 3.239
+autoplay = true
+
+[node name="Boss_Music" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_d08sn")
+parameters/looping = true
 
 [connection signal="button_down" from="Camera2D/PauseScreen/UnpauseButton" to="." method="_on_unpause_button_button_down"]
 [connection signal="button_down" from="Camera2D/PauseScreen/QuitToMainMenuButton" to="." method="_on_quit_to_main_menu_button_button_down"]

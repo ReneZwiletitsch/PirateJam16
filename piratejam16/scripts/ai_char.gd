@@ -55,7 +55,7 @@ func load_attributes(char_to_load):
 func necromancy():
 	if not dead and playercontrol:
 		load_attributes(character.dead)
-		Singleton.player_position = global_position + Vector2(0,40)
+		Singleton.player_position = global_position #+ Vector2(0,40)
 		Singleton.current_player_hp = 0
 		Singleton.current_player_strenght = 0
 		Singleton.current_player_dex = 0
@@ -63,6 +63,7 @@ func necromancy():
 		remove_from_group("player")
 	
 	elif (get_local_mouse_position().length() < 32 and dead and not fully_dead and (global_position-Singleton.player_position).length() <Singleton.necromancy_range and Singleton.current_character == null) or boss_fight:				
+		print("debug",(global_position-Singleton.player_position).length()," ",global_position," ",Singleton.player_position)
 		add_to_group("player")
 		if boss_fight:
 			load_attributes(character.fighting_boss)

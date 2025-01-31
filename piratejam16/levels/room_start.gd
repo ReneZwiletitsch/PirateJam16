@@ -17,7 +17,7 @@ func _process(delta: float) -> void:
 			var instance = scene.instantiate()
 			instance.rotate(PI/2)
 			instance.set_scale(Vector2(0.7,0.7))
-			instance.position = Singleton.player_position + Vector2(-10,-30)
+			instance.position = Singleton.player_position + Vector2(10,35)
 			print(Singleton.player_position)
 			add_child(instance,true)
 			Singleton.staff_instance = instance
@@ -65,9 +65,10 @@ func player_attack(mouse_vec,boss):
 func spawn_enemy(dead):
 	var instance = enemy.instantiate()
 	var rng = RandomNumberGenerator.new()
-	var x_rand = rng.randf_range(40, 250)
-	var y_rand = rng.randf_range(40, 120)
-	
+	var y_rand = 130
+	var x_rand = rng.randi_range(40, 250)
+
+	print("spawning:",x_rand," ",y_rand)
 	instance.position = Vector2(x_rand, y_rand);
 	add_child(instance,true)
 	Singleton.all_ai_char_instances.append(instance)

@@ -17,11 +17,10 @@ func _input(event):
 
 
 
-
-
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	$"../../General_Background".playing = false
+	$"../../Boss_Music".playing = true
 	Singleton.in_boss_scene = true
 	print(get_parent())
 	#camera zooms into necromancer

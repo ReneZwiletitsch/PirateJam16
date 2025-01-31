@@ -46,7 +46,7 @@ var current_player_dex := 0
 var max_attack_cooldown := 10.0
 var basic_attack_angle := PI/4 #45°, taken in both directions so 90° total
 var basic_character_range := 50
-var necromancy_range := 250
+var necromancy_range := 160
 var aggro_range := 150
 
 
