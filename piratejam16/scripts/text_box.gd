@@ -9,13 +9,13 @@ const MAX_WIDTH = 256
 var text = ""
 var letter_index = 0
 
-var letter_time = 0.02
-var space_time = 0.03
+var letter_time = 0.03
+var space_time = 0.06
 var punctuation_time = 0.2
 
 signal finished_displaying
 
-func display_text(text_to_display: String, is_dialogue: bool):
+func display_text(text_to_display: String):
 	text = text_to_display
 	label.text = text_to_display
 	
@@ -31,12 +31,8 @@ func display_text(text_to_display: String, is_dialogue: bool):
 	#global_position.x -= size.x / 5
 	#global_position.y -= size.y
 	
-	if not is_dialogue:
-		label.text = text_to_display
-	else:
-		label.text = ""
-		_display_letter()
-	
+	label.text = ""
+	_display_letter()
 	
 	
 func _display_letter():

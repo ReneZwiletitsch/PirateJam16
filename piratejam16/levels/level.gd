@@ -46,23 +46,6 @@ func _process(_delta: float) -> void:
 			get_tree().change_scene_to_file("res://Scenes/you_died_screen.tscn")
 
 func _physics_process(delta):
-	if frames_since_targeting %20 ==0:
-		var mouse_pos = get_global_mouse_position()
-		for i in Singleton.all_ai_char_instances:
-			if i.dead and ((mouse_pos - i.global_position).length()) <= 15:
-				
-			# We're hovering over a dead corpse. Display stats
-				
-				var stats_list: Array[String] = [
-				"Current HP: " + str(i.current_char.curr_hp) + "\n" \
-				+ "Strength: " + str(i.current_char.strenght) + "\n" \
-				+ "Speed: " + str(i.current_char.speed) + "\n" \
-				+ "Dexterity: " + str(i.current_char.dex) + "\n" \
-				+ "Willpower: " + str(floor(i.current_char.willpower * 100) / 100)
-			]
-				print("Mouse is hovering over the character. Dialogue for character stats")
-				DialogueManager.pop_up(mouse_pos, stats_list)
-	
 	if frames_since_targeting %60 ==0:
 		if Singleton.current_character:
 			var shortest_distance=9999
@@ -80,7 +63,22 @@ func _physics_process(delta):
 		frames_since_targeting = 1
 	else:
 		frames_since_targeting +=1
-
+	
+	var mouse_pos = get_global_mouse_position()
+	for i in Singleton.all_ai_char_instances:
+		if i.dead and ((mouse_pos - i.global_position).length()) <= 20:
+			
+		# We're hovering over a dead corpse. Display stats
+			
+			var stats_list: Array[String] = [
+			"Current HP: " + str(i.current_char.curr_hp) + "\n" \
+			+ "Strength: " + str(i.current_char.strenght) + "\n" \
+			+ "Speed: " + str(i.current_char.speed) + "\n" \
+			+ "Dexterity: " + str(i.current_char.dex) + "\n" \
+			+ "Willpower: " + str(i.current_char.willpower)
+		]
+			print("Mouse is hovering over the character. Dialogue for character stats")
+			DialogueManager.start_dialogue(i, stats_list)
 		
 
 func _input(event):
