@@ -34,8 +34,7 @@ func _input(event):
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	
-	if Singleton.current_character:
+	if Singleton.current_character and not Singleton.in_boss_scene:
 		position = Singleton.current_character.position
 	
 	return #here to keep the camera fixed for now

@@ -27,7 +27,6 @@ func _process(delta: float) -> void:
 			if (i.global_position - Singleton.player_position).length() < Singleton.necromancy_range and i.dead and not i.fully_dead:
 				alive_check = true
 		if not alive_check:
-			Singleton.game_lost = true
 			print("YOU DIED")
 			
 func _input(event):
@@ -69,7 +68,7 @@ func spawn_enemy(dead):
 	var x_rand = rng.randf_range(40, 250)
 	var y_rand = rng.randf_range(40, 120)
 	
-	instance.position = Vector2(250, 120);
+	instance.position = Vector2(x_rand, y_rand);
 	add_child(instance,true)
 	Singleton.all_ai_char_instances.append(instance)
 

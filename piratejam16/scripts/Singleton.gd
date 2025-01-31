@@ -37,7 +37,7 @@ const dialogue_second_phase: Array[String] =[
 
 
 
-var player_position = Vector2(40,40)
+var player_position = Vector2(165,118)
 var current_player_hp := 0
 var current_player_strenght := 0
 var current_player_dex := 0
@@ -65,6 +65,7 @@ var chars_for_boss_fight = []
 var boss_hp := 10000
 var boss_defeated := false
 
+var in_boss_scene := false
 
 func player_damage(strenght):
 	current_player_hp -= strenght

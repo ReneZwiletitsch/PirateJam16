@@ -22,6 +22,7 @@ func _input(event):
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	Singleton.in_boss_scene = true
 	print(get_parent())
 	#camera zooms into necromancer
 	var x = -100
@@ -52,13 +53,14 @@ func _ready() -> void:
 	necromancer_instance.load_attributes(necromancer_instance.character.necromancer)
 	#necromancer stands up
 	print("TEMP necromancer revived")
+	DialogueManager.text_box_position = camera_start + Vector2(-60,-50)
 	DialogueManager.start_dialogue(self, Singleton.dialogue_necromancer_revived)
 	
 	await get_tree().create_timer(2).timeout 
 	
 	#zoom out, bbeg becomes visible
 	var start_zoom: float = 5
-	var end_zoom: float = 3.765/1.6
+	var end_zoom: float = 3.765#/1.6
 	
 	const lerp_secs = 300;
 	for i in range(lerp_secs):
