@@ -55,3 +55,9 @@ func _unhandled_input(event):
 			return
 			
 		_show_text_box()
+		
+		
+func fuck_this_shit():
+	if is_instance_valid(text_box):
+		is_dialogue_active = false
+		text_box.queue_free()

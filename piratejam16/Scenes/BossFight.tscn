@@ -1,8 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://ls3ujx0piiw0"]
+[gd_scene load_steps=4 format=3 uid="uid://ls3ujx0piiw0"]
 
 [ext_resource type="Script" path="res://scripts/boss_fight.gd" id="1_saalm"]
 [ext_resource type="Script" path="res://levels/room.gd" id="3_du737"]
-[ext_resource type="PackedScene" uid="uid://cdhth2qsqgsmq" path="res://levels/room_boss.tscn" id="3_fkfjc"]
+[ext_resource type="PackedScene" uid="uid://dvjfctkumeanm" path="res://levels/room_boss.tscn" id="3_fkfjc"]
 
 [node name="BossFight" type="Node2D"]
 script = ExtResource("1_saalm")

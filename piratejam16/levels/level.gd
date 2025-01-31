@@ -37,6 +37,7 @@ func _process(_delta: float) -> void:
 				alive_check = true
 		if not alive_check:
 			Singleton.game_lost = true
+			DialogueManager.fuck_this_shit()
 			#for child in get_tree().get_root().get_children():
 			#	if child is MarginContainer:
 			#		print("freeing this: ")
