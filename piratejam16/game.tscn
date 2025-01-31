@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://do5rj2k3k24xt"]
+[gd_scene load_steps=7 format=3 uid="uid://do5rj2k3k24xt"]
 
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_hwito"]
 [ext_resource type="Script" path="res://map.gd" id="1_mpa87"]
 [ext_resource type="Script" path="res://levels/stairs.gd" id="2_beivp"]
-[ext_resource type="PackedScene" uid="uid://cl0f7pp1rg8h1" path="res://player.tscn" id="2_ny7hd"]
+[ext_resource type="Texture2D" uid="uid://dpckv1llqjwbh" path="res://assets/screens/pause.png" id="4_ddmvq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mi883"]
 
@@ -50,6 +51,7 @@ func _process(_delta):
 "
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_hwito")
 
 [node name="Map" type="Node2D" parent="."]
 script = ExtResource("1_mpa87")
@@ -62,12 +64,31 @@ script = ExtResource("2_beivp")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Stairs"]
 shape = SubResource("RectangleShape2D_mi883")
 
-[node name="Player" parent="." instance=ExtResource("2_ny7hd")]
-visible = false
-z_index = 2
-position = Vector2(144, 80)
-
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(153, 86)
 zoom = Vector2(3.765, 3.765)
 script = SubResource("GDScript_epv8j")
+
+[node name="PauseScreen" type="Sprite2D" parent="Camera2D"]
+process_mode = 2
+visible = false
+z_index = 9
+scale = Vector2(0.588, 0.588)
+texture = ExtResource("4_ddmvq")
+
+[node name="UnpauseButton" type="Button" parent="Camera2D/PauseScreen"]
+offset_left = -375.0
+offset_top = 162.0
+offset_right = -298.0
+offset_bottom = 193.0
+text = "Unpause"
+
+[node name="QuitToMainMenuButton" type="Button" parent="Camera2D/PauseScreen"]
+offset_left = 211.0
+offset_top = 161.0
+offset_right = 366.0
+offset_bottom = 192.0
+text = "Quit to main menu"
+
+[connection signal="button_down" from="Camera2D/PauseScreen/UnpauseButton" to="." method="_on_unpause_button_button_down"]
+[connection signal="button_down" from="Camera2D/PauseScreen/QuitToMainMenuButton" to="." method="_on_quit_to_main_menu_button_button_down"]

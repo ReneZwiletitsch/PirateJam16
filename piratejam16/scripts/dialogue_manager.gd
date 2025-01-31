@@ -60,5 +60,6 @@ func _unhandled_input(event):
 		
 func fuck_this_shit():
 	if is_instance_valid(text_box):
+		current_line_index = 0
 		is_dialogue_active = false
 		text_box.queue_free()

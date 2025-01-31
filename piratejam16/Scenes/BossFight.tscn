@@ -7,9 +7,6 @@
 [node name="BossFight" type="Node2D"]
 script = ExtResource("1_saalm")
 
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(3.765, 3.765)
-
 [node name="BossRoom" parent="." instance=ExtResource("3_fkfjc")]
 position = Vector2(-209.005, -136)
 scale = Vector2(1.535, 1.535)

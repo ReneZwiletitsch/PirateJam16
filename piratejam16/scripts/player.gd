@@ -7,4 +7,4 @@ func _ready() -> void:
 	add_to_group("player")
 
 func _start_dialogue():
-	DialogueManager.start_dialogue(self, Singleton.how_to_play)
+	DialogueManager.start_dialogue(self, Singleton.all_dialogue[Singleton.dialogue_index])
