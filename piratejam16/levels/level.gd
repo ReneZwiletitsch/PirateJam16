@@ -86,6 +86,7 @@ func _input(event):
 		for i in Singleton.all_ai_char_instances:
 			i.necromancy()
 			if i.playercontrol:
+				$"../../Necromancy_Sound".playing = true
 				Singleton.current_character = i
 				#despawn the staff
 				remove_child(Singleton.staff_instance)

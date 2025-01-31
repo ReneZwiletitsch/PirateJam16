@@ -165,6 +165,7 @@ func player_attack(mouse_vec,boss):
 		var scene = preload("res://Scenes/damage_indicator.tscn")
 		var instance = scene.instantiate()
 		add_child(instance,true)
+		$"../../Damage_Sound".playing = true
 		if boss:
 			Singleton.player_damage(boss_instance.current_char.strenght)
 			instance.label.text = str(boss_instance.current_char.strenght)

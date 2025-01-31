@@ -131,6 +131,10 @@ func character_damage():
 		var instance = scene.instantiate()
 		add_child(instance,true)
 		instance.label.text = str(Singleton.current_player_strenght)
+		if character_index ==	attribute_list[character.alive][attribute.character_index] or character_index == attribute_list[character.undead][attribute.character_index]:
+			$"../../../../Damage_Sound".playing = true
+		else:
+			$"../../../Damage_Sound".playing = true
 		if character_index ==	attribute_list[character.alive][attribute.character_index]:
 			instance.label.set("theme_override_colors/font_color", Color(1, 0, 1, 1))
 			
@@ -190,6 +194,10 @@ func _on_attack_timer_timeout() -> void:
 		var enemy_vec = enemy_pos.normalized()
 		if abs(acos(aim.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< attack_range:
 			Singleton.player_damage(current_char.strenght)
+			if character_index ==	attribute_list[character.alive][attribute.character_index] or character_index == attribute_list[character.undead][attribute.character_index]:
+				$"../../../../Damage_Sound".playing = true
+			else:
+				$"../../../Damage_Sound".playing = true
 			var scene = preload("res://Scenes/damage_indicator.tscn")
 			var instance = scene.instantiate()
 			add_child(instance,true)
@@ -202,6 +210,10 @@ func _on_attack_timer_timeout() -> void:
 		var enemy_vec = enemy_pos.normalized()
 		if abs(acos(aim.dot(enemy_vec))) < Singleton.basic_attack_angle and enemy_pos.length()< attack_range:
 			Singleton.boss_damage(current_char.strenght)
+			if character_index ==	attribute_list[character.alive][attribute.character_index] or character_index == attribute_list[character.undead][attribute.character_index]:
+				$"../../../../Damage_Sound".playing = true
+			else:
+				$"../../../Damage_Sound".playing = true
 			var scene = preload("res://Scenes/damage_indicator.tscn")
 			var instance = scene.instantiate()
 			add_child(instance,true)
