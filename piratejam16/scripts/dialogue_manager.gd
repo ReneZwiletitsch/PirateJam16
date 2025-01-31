@@ -7,7 +7,7 @@ var dialogue_lines: Array[String] = []
 var current_line_index = 0
 
 var text_box
-var text_box_position: Node2D
+var text_box_position = Vector2(0,0)
 
 var is_dialogue_active = false
 var can_advance_line = false
@@ -18,7 +18,6 @@ func start_dialogue(player: Node2D, lines: Array[String]):
 		return
 	
 	dialogue_lines = lines
-	text_box_position = player
 	_show_text_box()
 	
 	is_dialogue_active = true
@@ -40,7 +39,7 @@ func _process(delta: float) -> void:
 
 func _update_text_box_position():
 	if text_box and text_box_position:
-		text_box.global_position = text_box_position.global_position + Vector2(-45, -25)
+		text_box.global_position = text_box_position# + Vector2(-45, -25)
 
 func _on_text_box_finished_displaying():
 	can_advance_line = true

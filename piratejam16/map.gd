@@ -14,7 +14,9 @@ func _ready() -> void:
 	var inst = start_room.instantiate()
 	add_child(inst, true)
 	level = inst
+	DialogueManager.text_box_position = Vector2(103,135)
 	DialogueManager.start_dialogue(self, Singleton.intro_story_and_tutorial)
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
