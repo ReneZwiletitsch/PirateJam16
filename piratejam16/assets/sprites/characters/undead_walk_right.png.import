@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bqr10tii5v174"
-path="res://.godot/imported/necro_idle.png-d568352cbdab56c27e088a8e73a2d4df.ctex"
+uid="uid://bgoyif54qy80l"
+path="res://.godot/imported/undead_walk_right.png-4106302dddb22b74f66a511679a3d930.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/characters/necro_idle.png"
-dest_files=["res://.godot/imported/necro_idle.png-d568352cbdab56c27e088a8e73a2d4df.ctex"]
+source_file="res://assets/sprites/characters/undead_walk_right.png"
+dest_files=["res://.godot/imported/undead_walk_right.png-4106302dddb22b74f66a511679a3d930.ctex"]
 
 [params]
 

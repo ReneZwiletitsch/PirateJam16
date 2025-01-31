@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6cle63voqr51"
-path="res://.godot/imported/boss.png-ef32fcfba907a73bbe4d694ad5f0728b.ctex"
+uid="uid://bdur3eoymwt7y"
+path="res://.godot/imported/undead_walk_left.png-67cda56ecc266524a753a56277835170.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/characters/boss.png"
-dest_files=["res://.godot/imported/boss.png-ef32fcfba907a73bbe4d694ad5f0728b.ctex"]
+source_file="res://assets/sprites/characters/undead_walk_left.png"
+dest_files=["res://.godot/imported/undead_walk_left.png-67cda56ecc266524a753a56277835170.ctex"]
 
 [params]
 

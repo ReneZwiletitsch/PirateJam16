@@ -36,6 +36,7 @@ var attribute_list = [
 			[4,false,false,false,"fighting_boss",Singleton.basic_character_range], #fighting boss
 			[5,false,false,false,"boss",Singleton.basic_character_range*2], #boss
 			[6,true,false,true,"necromancer",Singleton.basic_character_range], #necromancer
+			[7,true,false,true,"necromancer_dead",Singleton.basic_character_range], #necromancer
 			]
 
 
@@ -106,7 +107,7 @@ func _process(delta: float) -> void:
 		load_attributes(character.fully_dead)
 		Singleton.current_character = null
 		Singleton.player_position = global_position+ Vector2(0,40)
-		self.set_scale(Vector2(0.5,0.5))
+		#self.set_scale(Vector2(0.5,0.5))
 		self.position += Vector2(0,16)
 		self.set_z_index(0)
 

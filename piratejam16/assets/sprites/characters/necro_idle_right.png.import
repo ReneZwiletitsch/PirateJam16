@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://jy4vk3l3tyle"
-path="res://.godot/imported/fighting_boss.png-943d95c83604f208f0b11b01d4143ac1.ctex"
+uid="uid://bu7ubmim4lpgx"
+path="res://.godot/imported/necro_idle_right.png-545f03d95e8e6aa095fcc798bc2cec80.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/characters/fighting_boss.png"
-dest_files=["res://.godot/imported/fighting_boss.png-943d95c83604f208f0b11b01d4143ac1.ctex"]
+source_file="res://assets/sprites/characters/necro_idle_right.png"
+dest_files=["res://.godot/imported/necro_idle_right.png-545f03d95e8e6aa095fcc798bc2cec80.ctex"]
 
 [params]
 
