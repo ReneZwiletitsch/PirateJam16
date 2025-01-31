@@ -3,7 +3,7 @@ extends Node2D
 @onready var boss_instance = null
 @onready var second_phase_triggered = false
 @onready var all_ai_char_instances = []
-
+@onready var text_position
 func _input(event):
 	if event.is_action_pressed("attack"):
 
@@ -52,7 +52,8 @@ func _ready() -> void:
 	necromancer_instance.load_attributes(necromancer_instance.character.necromancer)
 	#necromancer stands up
 	print("TEMP necromancer revived")
-	DialogueManager.start_dialogue(camera_start + Vector2(-60, -50), Singleton.dialogue_necromancer_revived)
+	text_position =camera_start + Vector2(0, -20)
+	DialogueManager.start_dialogue(text_position, Singleton.dialogue_necromancer_revived)
 	
 	await get_tree().create_timer(2).timeout 
 	
@@ -71,10 +72,10 @@ func _ready() -> void:
 	
 	DialogueManager.fuck_this_shit()
 	await get_tree().create_timer(1).timeout 
-	DialogueManager.start_dialogue(global_position, Singleton.dialogue_boss_visible)
+	DialogueManager.start_dialogue(text_position, Singleton.dialogue_boss_visible)
 	await get_tree().create_timer(3).timeout 
 	DialogueManager.fuck_this_shit()
-	DialogueManager.start_dialogue(global_position, Singleton.dialogue_summon_help)
+	DialogueManager.start_dialogue(text_position, Singleton.dialogue_summon_help)
 		
 	var ai_counter :=0
 	Singleton.player_position = Vector2(0,300)
@@ -88,7 +89,7 @@ func _ready() -> void:
 
 	await get_tree().create_timer(3).timeout 
 	DialogueManager.fuck_this_shit()
-	DialogueManager.start_dialogue(global_position, Singleton.dialogue_bossfight_starts)
+	DialogueManager.start_dialogue(text_position, Singleton.dialogue_bossfight_starts)
 	await get_tree().create_timer(3).timeout 
 	DialogueManager.fuck_this_shit()
 	Singleton.current_character=boss_instance
@@ -125,7 +126,7 @@ func spawn_necromancer():
 	instance.current_char.strenght = 100
 	instance.current_char.dex = 30
 	instance.current_char.willpower = 1
-	instance.current_char.max_hp = 1000
+	instance.current_char.max_hp = 300
 	instance.player_attack_woundup.connect(player_attack)
 	necromancer_instance = instance
 	
@@ -178,7 +179,7 @@ func player_attack(mouse_vec,boss):
 
 	
 func second_phase():
-	DialogueManager.start_dialogue(global_position, Singleton.dialogue_second_phase)
+	DialogueManager.start_dialogue(text_position, Singleton.dialogue_second_phase)
 	await get_tree().create_timer(3).timeout
 	DialogueManager.fuck_this_shit()
 	Singleton.current_character=boss_instance

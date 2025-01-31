@@ -11,7 +11,6 @@ const intro_story_and_tutorial: Array[String] = [
 	"But be careful, you are not in full control over it!",
 	"Hover over a corpse and press C to resurrect it!",
 	"While controlling a corpse use WASD to move and LMB to attack",
-	"use stairs to get to enter the next level",
 ]
 
 const dialogue_necromancer_revived: Array[String] = [
@@ -37,7 +36,7 @@ const dialogue_second_phase: Array[String] =[
 
 
 
-var player_position = Vector2(165,118)
+var player_position = Vector2(165,98)
 var current_player_hp := 0
 var current_player_strenght := 0
 var current_player_dex := 0

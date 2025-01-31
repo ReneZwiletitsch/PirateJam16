@@ -50,7 +50,10 @@ func load_attributes(char_to_load):
 	last_animation = texture_type+"_idle_right"
 	attack_range = attribute_list[char_to_load][attribute.attack_range]
 	$AnimatedSprite2D.set_animation(texture_type+"_idle_right")
-	
+	if character_index ==	attribute_list[character.dead][attribute.character_index]:
+		self.set_z_index(2)
+	else:
+		self.set_z_index(3)
 
 func necromancy():
 	if not dead and playercontrol:
@@ -107,7 +110,7 @@ func _process(delta: float) -> void:
 		print("player just died, doing fully_dead thing")
 		load_attributes(character.fully_dead)
 		Singleton.current_character = null
-		Singleton.player_position = global_position+ Vector2(0,40)
+		Singleton.player_position = global_position#+ Vector2(0,40)
 		#self.set_scale(Vector2(0.5,0.5))
 		self.position += Vector2(0,16)
 		self.set_z_index(0)

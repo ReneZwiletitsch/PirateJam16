@@ -17,7 +17,7 @@ func _process(delta: float) -> void:
 			var instance = scene.instantiate()
 			instance.rotate(PI/2)
 			instance.set_scale(Vector2(0.7,0.7))
-			instance.position = Singleton.player_position + Vector2(10,35)
+			instance.position = Singleton.player_position #+ Vector2(10,35)
 			print(Singleton.player_position)
 			add_child(instance,true)
 			Singleton.staff_instance = instance
