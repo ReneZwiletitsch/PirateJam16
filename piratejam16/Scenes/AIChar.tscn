@@ -1,4 +1,4 @@
-[gd_scene load_steps=90 format=3 uid="uid://dm77ptpohrroj"]
+[gd_scene load_steps=92 format=3 uid="uid://dm77ptpohrroj"]
 
 [ext_resource type="Texture2D" uid="uid://dwmotiryhyoci" path="res://assets/sprites/characters/fully_dead.png" id="2_62yb5"]
 [ext_resource type="Script" path="res://scripts/ai_char.gd" id="2_moamb"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://ds1i7gbxe4fvg" path="res://assets/sprites/characters/Basic_undead_mirrored-Sheet.png" id="6_g1b3n"]
 [ext_resource type="Texture2D" uid="uid://hrmu7j50hwl6" path="res://assets/sprites/characters/Basic_undead-Sheet.png" id="6_k55w1"]
 [ext_resource type="Texture2D" uid="uid://wsptk0uoej0q" path="res://assets/sprites/characters/Basic_dead-export.png" id="7_40vbd"]
+[ext_resource type="Texture2D" uid="uid://cx5eooprqhe6g" path="res://assets/sprites/characters/necro_dead.png" id="9_m36ni"]
 [ext_resource type="Texture2D" uid="uid://duvjjh7p5o00w" path="res://assets/sprites/characters/necro_idle_left.png" id="10_1m6jv"]
 [ext_resource type="Texture2D" uid="uid://bdur3eoymwt7y" path="res://assets/sprites/characters/undead_walk_left.png" id="10_kqn2f"]
 [ext_resource type="Texture2D" uid="uid://bu7ubmim4lpgx" path="res://assets/sprites/characters/necro_idle_right.png" id="11_5e35c"]
@@ -188,6 +189,10 @@ region = Rect2(128, 0, 64, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_e8kex"]
 atlas = ExtResource("5_gxja2")
 region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g2cqf"]
+atlas = ExtResource("9_m36ni")
+region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s0lae"]
 atlas = ExtResource("10_1m6jv")
@@ -497,6 +502,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_g2cqf")
+}],
+"loop": true,
+"name": &"necromancer_dead_idle_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_s0lae")
 }, {
 "duration": 1.0,
@@ -629,7 +642,7 @@ script = ExtResource("2_moamb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_h1yg5")
-animation = &"alive_idle_left"
+animation = &"necromancer_dead_idle_right"
 autoplay = "alive_walking_right"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

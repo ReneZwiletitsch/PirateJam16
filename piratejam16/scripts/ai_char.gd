@@ -36,6 +36,7 @@ var attribute_list = [
 			[4,false,false,false,"fighting_boss",Singleton.basic_character_range], #fighting boss
 			[5,false,false,false,"boss",Singleton.basic_character_range*2], #boss
 			[6,true,false,true,"necromancer",Singleton.basic_character_range], #necromancer
+			[7,true,false,true,"necromancer_dead",Singleton.basic_character_range], #necromancer
 			]
 
 
