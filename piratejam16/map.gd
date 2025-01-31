@@ -25,12 +25,12 @@ func _input(event):
 	if event.is_action_pressed("DEBUG_prev_level"):
 		prev_floor()
 	if event.is_action_pressed("DEBUG_to_boss_room"):
-		var stair_node = get_node("Stairs")
-		stair_node.queue_free()
 		level.queue_free()
 		var inst = boss_room.instantiate()
 		add_child(inst, true)
 		level = inst
+		var stair_node = get_node("Stairs")
+		stair_node.queue_free()
 
 func new_floor():
 	save_characters()

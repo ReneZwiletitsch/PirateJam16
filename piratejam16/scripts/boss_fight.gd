@@ -25,7 +25,8 @@ func _ready() -> void:
 	#camera zooms into necromancer
 	var x = -100
 	var y = 100
-	$Camera2D.set_position(Vector2(x,y))
+	var camera_start = Vector2(x, y);
+	$Camera2D.set_position(camera_start)
 	$Camera2D.zoom = Vector2(5,5)
 	
 	Singleton.aggro_range = 9999999
@@ -54,13 +55,17 @@ func _ready() -> void:
 	await get_tree().create_timer(2).timeout 
 	
 	#zoom out, bbeg becomes visible
-	var start_zoom = 5
-	var end_zoom = 3.765
-	for i in range(300):
-		await get_tree().create_timer(0.01).timeout 
-		$Camera2D.set_position(Vector2(x-i*x/300,y-i*y/300))
-		$Camera2D.zoom = Vector2(start_zoom+ (end_zoom-start_zoom)*i/300.0,start_zoom+ (end_zoom-start_zoom)*i/300.0)
+	var start_zoom: float = 5
+	var end_zoom: float = 3.765/1.6
 	
+	const lerp_secs = 300;
+	for i in range(lerp_secs):
+		await get_tree().create_timer(0.01).timeout
+		var lerp_pos = float(i)/float(lerp_secs);
+		var camera_2_zoom = lerp(start_zoom, end_zoom, lerp_pos)
+		var camera_2_pos = camera_start.lerp(Vector2(25, 0), lerp_pos)
+		$Camera2D.set_position(camera_2_pos)
+		$Camera2D.zoom = Vector2(camera_2_zoom, camera_2_zoom)
 	
 	
 	await get_tree().create_timer(2).timeout 
@@ -80,9 +85,10 @@ func _ready() -> void:
 	print("fight starts")
 	Singleton.current_character=boss_instance
 
-
-
-
+# Linear interpolation
+func lerp(a, b, t):
+	return a + (b-a) * t
+		
 func spawn_boss():
 	print("spawning boss")
 	var scene = preload("res://Scenes/AIChar.tscn")
