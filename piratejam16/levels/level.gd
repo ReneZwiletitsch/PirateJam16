@@ -75,10 +75,10 @@ func _physics_process(delta):
 			+ "Strength: " + str(i.current_char.strenght) + "\n" \
 			+ "Speed: " + str(i.current_char.speed) + "\n" \
 			+ "Dexterity: " + str(i.current_char.dex) + "\n" \
-			+ "Willpower: " + str(i.current_char.willpower)
+			+ "Willpower: " + str(floor(i.current_char.willpower * 100) / 100)
 		]
-			print("Mouse is hovering over the character. Dialogue for character stats")
-			DialogueManager.start_dialogue(i, stats_list)
+			#print("Mouse is hovering over the character. Dialogue for character stats")
+			DialogueManager.pop_up(mouse_pos, stats_list)
 		
 
 func _input(event):

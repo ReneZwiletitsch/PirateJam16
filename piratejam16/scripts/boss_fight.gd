@@ -52,8 +52,7 @@ func _ready() -> void:
 	necromancer_instance.load_attributes(necromancer_instance.character.necromancer)
 	#necromancer stands up
 	print("TEMP necromancer revived")
-	DialogueManager.text_box_position = camera_start + Vector2(-60,-50)
-	DialogueManager.start_dialogue(self, Singleton.dialogue_necromancer_revived)
+	DialogueManager.start_dialogue(camera_start + Vector2(-60, -50), Singleton.dialogue_necromancer_revived)
 	
 	await get_tree().create_timer(2).timeout 
 	
@@ -72,10 +71,10 @@ func _ready() -> void:
 	
 	DialogueManager.fuck_this_shit()
 	await get_tree().create_timer(1).timeout 
-	DialogueManager.start_dialogue(self, Singleton.dialogue_boss_visible)
+	DialogueManager.start_dialogue(global_position, Singleton.dialogue_boss_visible)
 	await get_tree().create_timer(3).timeout 
 	DialogueManager.fuck_this_shit()
-	DialogueManager.start_dialogue(self, Singleton.dialogue_summon_help)
+	DialogueManager.start_dialogue(global_position, Singleton.dialogue_summon_help)
 		
 	var ai_counter :=0
 	Singleton.player_position = Vector2(0,300)
@@ -89,7 +88,7 @@ func _ready() -> void:
 
 	await get_tree().create_timer(3).timeout 
 	DialogueManager.fuck_this_shit()
-	DialogueManager.start_dialogue(self, Singleton.dialogue_bossfight_starts)
+	DialogueManager.start_dialogue(global_position, Singleton.dialogue_bossfight_starts)
 	await get_tree().create_timer(3).timeout 
 	DialogueManager.fuck_this_shit()
 	Singleton.current_character=boss_instance
@@ -179,7 +178,7 @@ func player_attack(mouse_vec,boss):
 
 	
 func second_phase():
-	DialogueManager.start_dialogue(self, Singleton.dialogue_second_phase)
+	DialogueManager.start_dialogue(global_position, Singleton.dialogue_second_phase)
 	await get_tree().create_timer(3).timeout
 	DialogueManager.fuck_this_shit()
 	Singleton.current_character=boss_instance
