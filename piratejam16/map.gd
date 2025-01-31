@@ -14,6 +14,7 @@ func _ready() -> void:
 	var inst = start_room.instantiate()
 	add_child(inst, true)
 	level = inst
+	DialogueManager.start_dialogue(self, Singleton.intro_story_and_tutorial)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -50,6 +51,7 @@ func next_floor():
 	if current_floor < max_floors:
 		current_floor += 1;
 	if current_floor == max_floors:
+		DialogueManager.fuck_this_shit()
 		level.queue_free()
 		Singleton.current_character = null
 		$"../Camera2D".queue_free()

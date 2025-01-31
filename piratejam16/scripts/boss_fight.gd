@@ -51,6 +51,7 @@ func _ready() -> void:
 	necromancer_instance.load_attributes(necromancer_instance.character.necromancer)
 	#necromancer stands up
 	print("TEMP necromancer revived")
+	DialogueManager.start_dialogue(self, Singleton.dialogue_necromancer_revived)
 	
 	await get_tree().create_timer(2).timeout 
 	
@@ -67,9 +68,12 @@ func _ready() -> void:
 		$Camera2D.set_position(camera_2_pos)
 		$Camera2D.zoom = Vector2(camera_2_zoom, camera_2_zoom)
 	
-	
-	await get_tree().create_timer(2).timeout 
-	print("TEMP necromancer summons characters")
+	DialogueManager.fuck_this_shit()
+	await get_tree().create_timer(1).timeout 
+	DialogueManager.start_dialogue(self, Singleton.dialogue_boss_visible)
+	await get_tree().create_timer(3).timeout 
+	DialogueManager.fuck_this_shit()
+	DialogueManager.start_dialogue(self, Singleton.dialogue_summon_help)
 		
 	var ai_counter :=0
 	Singleton.player_position = Vector2(0,300)
@@ -81,8 +85,11 @@ func _ready() -> void:
 			ai_counter += 1
 			print(ai_counter)
 
-	await get_tree().create_timer(2).timeout 
-	print("fight starts")
+	await get_tree().create_timer(3).timeout 
+	DialogueManager.fuck_this_shit()
+	DialogueManager.start_dialogue(self, Singleton.dialogue_bossfight_starts)
+	await get_tree().create_timer(3).timeout 
+	DialogueManager.fuck_this_shit()
 	Singleton.current_character=boss_instance
 
 # Linear interpolation
@@ -171,8 +178,9 @@ func player_attack(mouse_vec,boss):
 
 	
 func second_phase():
-	print("TEMP all ai dead, starting second phase")
-	await get_tree().create_timer(2).timeout
+	DialogueManager.start_dialogue(self, Singleton.dialogue_second_phase)
+	await get_tree().create_timer(3).timeout
+	DialogueManager.fuck_this_shit()
 	Singleton.current_character=boss_instance
 	necromancer_instance.playercontrol = true
 	necromancer_instance.current_char.willpower = 0
@@ -183,11 +191,11 @@ func second_phase():
 func _process(delta: float) -> void:
 	if Singleton.boss_defeated:
 		print("YOU WON")
-		Singleton.game_lost = true
+		DialogueManager.fuck_this_shit()
 		get_tree().change_scene_to_file("res://Scenes/game_won_screen.tscn")
 	if Singleton.player_died:
 		print("YOU LOST")
-		Singleton.game_lost = true
+		DialogueManager.fuck_this_shit()
 		get_tree().change_scene_to_file("res://Scenes/you_died_screen.tscn")
 
 	if not second_phase_triggered:

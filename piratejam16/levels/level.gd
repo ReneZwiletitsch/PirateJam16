@@ -36,7 +36,6 @@ func _process(_delta: float) -> void:
 			if (i.global_position - Singleton.player_position).length() < Singleton.necromancy_range and i.dead and not i.fully_dead:
 				alive_check = true
 		if not alive_check:
-			Singleton.game_lost = true
 			DialogueManager.fuck_this_shit()
 			#for child in get_tree().get_root().get_children():
 			#	if child is MarginContainer:

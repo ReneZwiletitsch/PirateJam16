@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://do5rj2k3k24xt"]
+[gd_scene load_steps=5 format=3 uid="uid://do5rj2k3k24xt"]
 
 [ext_resource type="Script" path="res://map.gd" id="1_mpa87"]
 [ext_resource type="Script" path="res://levels/stairs.gd" id="2_beivp"]
-[ext_resource type="PackedScene" uid="uid://cl0f7pp1rg8h1" path="res://player.tscn" id="2_ny7hd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mi883"]
 
@@ -61,11 +60,6 @@ script = ExtResource("2_beivp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Map/Stairs"]
 shape = SubResource("RectangleShape2D_mi883")
-
-[node name="Player" parent="." instance=ExtResource("2_ny7hd")]
-visible = false
-z_index = 2
-position = Vector2(144, 80)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(153, 86)
