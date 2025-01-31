@@ -27,6 +27,7 @@ func _input(event):
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
+	if Singleton.current_character:
 	if Input.is_action_pressed(\"up\"):
 		position.y -= PanSpeedKey
 	if Input.is_action_pressed(\"down\"):
@@ -40,10 +41,10 @@ func _process(_delta):
 
 [node name="LevelEditor" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource("1_pq5p0")]
-script = null
-
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(3.765, 3.765)
 position_smoothing_enabled = true
 script = SubResource("GDScript_epv8j")
+
+[node name="Player" parent="." instance=ExtResource("1_pq5p0")]
+script = null

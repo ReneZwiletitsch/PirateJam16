@@ -16,21 +16,27 @@ var ZoomMax = Vector2(5.,5.)
 var ZoomSpd = Vector2(0.3,0.3)
 var PanSpeedKey = 4
 
+var initial_pos;
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	initial_pos = position
 
 func _input(event):
+	return # Disable zoom
 	if event.is_action_pressed(\"ScrollZoomOut\"):
 		if zoom > ZoomMin:
 			zoom -= ZoomSpd
 	if event.is_action_pressed(\"ScrollZoomIn\"):
 		if zoom < ZoomMax:
 			zoom +=ZoomSpd
-	pass
-
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
+	
+	if Singleton.current_character:
+		position = Singleton.current_character.position
+	
 	return #here to keep the camera fixed for now
 	if Input.is_action_pressed(\"up\"):
 		position.y -= PanSpeedKey
